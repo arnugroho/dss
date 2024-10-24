@@ -8,11 +8,11 @@ const Footer: React.FC = () => {
       style={{
         background: 'none',
       }}
-      copyright="Powered by Ant Desgin"
+      copyright="Powered by Decision Support System"
       links={[
         {
-          key: 'Ant Design Pro',
-          title: 'Ant Design Pro',
+          key: 'Decision Support System Pro',
+          title: 'Decision Support System Pro',
           href: 'https://pro.ant.design',
           blankTarget: true,
         },
@@ -23,8 +23,8 @@ const Footer: React.FC = () => {
           blankTarget: true,
         },
         {
-          key: 'Ant Design',
-          title: 'Ant Design',
+          key: 'Decision Support System',
+          title: 'Decision Support System',
           href: 'https://ant.design',
           blankTarget: true,
         },
