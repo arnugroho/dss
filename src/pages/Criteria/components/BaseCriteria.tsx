@@ -91,7 +91,7 @@ export const columnsModalFormCriteria: ProFormColumnsType[] = [
     renderFormItem: (item, { defaultRender, ...rest }, form) => {
       const hasChild = form.getFieldValue('hasChild');
       return (
-        hasChild==='YA' ? <ProFormDigit/>: <></>
+        hasChild==='TIDAK' ? <ProFormDigit/>: <ProFormDigit readonly={true}/>
       );
     },
     width: 'md',
