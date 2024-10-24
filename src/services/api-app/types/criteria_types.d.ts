@@ -4,5 +4,6 @@ declare namespace API_TYPES {
     criteriaWeight:number;
     criteriaType:string;
     description:string;
+    criteriaParent:CriteriaListItem;
   } & DefaultItemResponse;
 }

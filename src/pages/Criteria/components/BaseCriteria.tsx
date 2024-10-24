@@ -15,7 +15,7 @@ import ModuleCard from '@/components/Container/ModuleCard';
 import ModuleModalForm from '@/components/Container/ModuleModalForm';
 import ModuleTableList from '@/components/Container/ModuleTableList';
 import DrawerContainer from '@/components/Operation/DrawerContainer';
-import { getCriteria, getCriteriaByUuid } from '@/services/api-app/api/criteria_api';
+import {getCriteria, getCriteriaByUuid, getCriteriaParent} from '@/services/api-app/api/criteria_api';
 import {
   handleAddCriteria,
   handleRemoveCriteria,
@@ -47,6 +47,35 @@ export const columnsModalFormCriteria: ProFormColumnsType[] = [
       style: {
         // width: '200px',
       },
+    },
+  },
+  {
+    title: 'Criteria Parent',
+    width: 'md',
+    colProps: {
+      md: 12,
+      xs: 24,
+    },
+    dataIndex: 'criteriaParentId',
+    renderFormItem: () => {
+      return (
+        <ProFormSelect
+          showSearch
+          request={async () => {
+            const options = { };
+            const params = {
+              current: 1,
+              pageSize: 20,
+            };
+
+            const result = await getCriteriaParent(params, options);
+            return result.data.map((item: { id: any; criteriaName: any }) => ({
+              label: item.criteriaName,
+              value: item.id,
+            }));
+          }}
+        />
+      );
     },
   },
   {
@@ -83,15 +112,18 @@ export const columnsModalFormCriteria: ProFormColumnsType[] = [
     formItemProps: {
       rules: [
         {
-          required: false,
+          required: true,
           message: 'This field is required',
         },
       ],
     },
     renderFormItem: (item, { defaultRender, ...rest }, form) => {
       const hasChild = form.getFieldValue('hasChild');
+      if (hasChild==='YA'){
+        form.setFieldsValue({ criteriaWeight: 0 });
+      }
       return (
-        hasChild==='TIDAK' ? <ProFormDigit/>: <ProFormDigit readonly={true}/>
+        hasChild==='TIDAK' ? <ProFormDigit required={true}/>: <ProFormDigit disabled={true} placeholder={"0"}/>
       );
     },
     width: 'md',
@@ -265,16 +297,31 @@ const BaseCriteria: React.FC<any> = ({ pathName }) => {
       },
     },
     {
+      title: 'Parent',
+      dataIndex: ['criteriaParent','criteriaName'],
+      valueType: 'text',
+      editable: false,
+      sorter: true,
+    },
+    {
       title: 'Bobot',
       dataIndex: 'criteriaWeight',
       valueType: 'digit',
+      copyable: true,
       sorter: true,
     },
     {
       title: 'Tipe',
       dataIndex: 'criteriaType',
       valueType: 'textarea',
-      copyable: true,
+      editable: false,
+      sorter: true,
+    },
+    {
+      title: 'Memiliki Sub',
+      dataIndex: 'hasChild',
+      valueType: 'text',
+      editable:false,
       sorter: true,
     },
     {
@@ -303,6 +350,7 @@ const BaseCriteria: React.FC<any> = ({ pathName }) => {
             handleDetail={() => {
               history.push(`${pathNameLoc}/${'menuDataItem.key'}`);
             }}
+            menuDataItem={{key:record.uuid}}
           />
         );
       },

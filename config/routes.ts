@@ -59,7 +59,7 @@ export default [
         component: './dashboard/analysis',
       },
       {
-        name: 'criteria',
+        name: 'Criteria',
         icon: 'smile',
         path: '/dashboard/criteria',
         component: './Criteria',
