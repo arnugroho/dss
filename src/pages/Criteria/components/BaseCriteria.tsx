@@ -23,7 +23,8 @@ import {
   handleUpdateCriteria,
 } from '@/services/api-app/handle/criteria_handle';
 import { AppstoreOutlined, DeleteFilled, TableOutlined } from '@ant-design/icons';
-import { Button, Col, Row, Segmented, Space, Tooltip } from 'antd';
+import {Button, Col, Drawer, Row, Segmented, Space, Tooltip} from 'antd';
+import StatisticDashboard from "@/pages/Criteria/components/StatisticDashboard";
 
 export const columnsModalFormCriteria: ProFormColumnsType[] = [
   {
@@ -368,44 +369,44 @@ const BaseCriteria: React.FC<any> = ({ pathName }) => {
                             </Typography.Title>
                           </Col> */}
         <Col>
-          <Segmented
-            options={[
-              {
-                value: 'List',
-                icon: <TableOutlined />,
-                title: 'Table View',
-              },
-              {
-                value: 'Card',
-                icon: <AppstoreOutlined />,
-                title: 'Card View',
-              },
-              // {
-              //   value: 'Calendar',
-              //   icon: <CalendarOutlined />,
-              //   title: 'Calendar View',
-              // },
-              // {
-              //   value: 'Gantt',
-              //   icon: <BarsOutlined />,
-              //   title: 'Gantt View',
-              // },
-              // {
-              //   value: 'Kanban',
-              //   icon: <ProjectOutlined />,
-              //   title: 'Kanban View',
-              // },
-              // {
-              //   value: '3D',
-              //   icon: <CodepenOutlined />,
-              //   title: '3D View',
-              // },
-            ]}
-            size="large"
-            onChange={(value) => {
-              setDisplay(value as any);
-            }}
-          />
+          {/*<Segmented*/}
+          {/*  options={[*/}
+          {/*    {*/}
+          {/*      value: 'List',*/}
+          {/*      icon: <TableOutlined />,*/}
+          {/*      title: 'Table View',*/}
+          {/*    },*/}
+          {/*    {*/}
+          {/*      value: 'Card',*/}
+          {/*      icon: <AppstoreOutlined />,*/}
+          {/*      title: 'Card View',*/}
+          {/*    },*/}
+          {/*    // {*/}
+          {/*    //   value: 'Calendar',*/}
+          {/*    //   icon: <CalendarOutlined />,*/}
+          {/*    //   title: 'Calendar View',*/}
+          {/*    // },*/}
+          {/*    // {*/}
+          {/*    //   value: 'Gantt',*/}
+          {/*    //   icon: <BarsOutlined />,*/}
+          {/*    //   title: 'Gantt View',*/}
+          {/*    // },*/}
+          {/*    // {*/}
+          {/*    //   value: 'Kanban',*/}
+          {/*    //   icon: <ProjectOutlined />,*/}
+          {/*    //   title: 'Kanban View',*/}
+          {/*    // },*/}
+          {/*    // {*/}
+          {/*    //   value: '3D',*/}
+          {/*    //   icon: <CodepenOutlined />,*/}
+          {/*    //   title: '3D View',*/}
+          {/*    // },*/}
+          {/*  ]}*/}
+          {/*  size="large"*/}
+          {/*  onChange={(value) => {*/}
+          {/*    setDisplay(value as any);*/}
+          {/*  }}*/}
+          {/*/>*/}
         </Col>
       </Row>
       {display === 'List' && (
@@ -460,6 +461,10 @@ const BaseCriteria: React.FC<any> = ({ pathName }) => {
         />
       )}
 
+      {display === 'Statistic' && (
+        <StatisticDashboard responsive={true}/>
+      )}
+
       <DrawerContainer
         showDetail={showDrawer}
         setShowDetail={setShowDrawer}
@@ -480,6 +485,12 @@ const BaseCriteria: React.FC<any> = ({ pathName }) => {
         imageType="INDIVIDUAL"
         parentImageUuid={currentRow.uuid}
       />
+
+      <Drawer title="Basic Drawer" onClose={onClose} open={open}>
+        <p>Some contents...</p>
+        <p>Some contents...</p>
+        <p>Some contents...</p>
+      </Drawer>
 
       <ModuleModalForm
         createModalOpen={createModalOpen}

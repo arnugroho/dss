@@ -1,6 +1,6 @@
 import { ProTable } from '@ant-design/pro-components';
 import { Button, Space, Row, Col, Tooltip } from 'antd';
-import { DeleteFilled, PlusOutlined } from '@ant-design/icons';
+import {DeleteFilled, PlusCircleOutlined, PlusOutlined} from '@ant-design/icons';
 import React from 'react';
 
 const ModuleTableList: React.FC<any> = ({
@@ -57,6 +57,16 @@ const ModuleTableList: React.FC<any> = ({
               ) : (
                 <></>
               ),
+              <Button
+                type="default"
+                key="treeview"
+                onClick={() => {
+
+                }}
+              >
+                <PlusCircleOutlined />
+                Tree View
+              </Button>
             ]}
             pagination={{
               defaultPageSize: 20,

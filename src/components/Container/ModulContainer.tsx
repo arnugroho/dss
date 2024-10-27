@@ -47,16 +47,16 @@ const ModulContainer: React.FC<any> = ({
           title: title,
         }}
         content={statistikDashboard}
-        tabList={[
-          {
-            tab: 'Overview',
-            key: 'overview',
-          },
-          {
-            tab: 'Statistic',
-            key: 'statistic',
-          },
-        ]}
+        // tabList={[
+        //   {
+        //     tab: 'Overview',
+        //     key: 'overview',
+        //   },
+        //   {
+        //     tab: 'Statistic',
+        //     key: 'statistic',
+        //   },
+        // ]}
       >
         {children}
         {!isPrint ? (
