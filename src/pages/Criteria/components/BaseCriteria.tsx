@@ -166,6 +166,29 @@ export const columnsModalFormCriteria: ProFormColumnsType[] = [
     },
   },
   {
+    title: 'Is Active',
+    dataIndex: 'statusDelete',
+    valueType: 'switch',
+    formItemProps: {
+      rules: [
+        {
+          required: false,
+          message: 'This field is required',
+        },
+      ],
+    },
+    width: 'md',
+    colProps: {
+      xs: 24,
+      md: 12,
+    },
+    fieldProps: {
+      style: {
+        // width: '200px',
+      },
+    },
+  },
+  {
     title: 'Description',
     dataIndex: 'description',
     valueType: 'textarea',
@@ -180,7 +203,7 @@ export const columnsModalFormCriteria: ProFormColumnsType[] = [
     width: 'md',
     colProps: {
       xs: 24,
-      md: 12,
+      md: 24,
     },
     fieldProps: {
       style: {
@@ -283,6 +306,7 @@ const BaseCriteria: React.FC<any> = ({ pathName }) => {
       title: 'Nama Kriteria',
       dataIndex: 'criteriaName',
       valueType: 'text',
+      editable: false,
       sorter: true,
       render: (dom, entity) => {
         return (
@@ -329,6 +353,19 @@ const BaseCriteria: React.FC<any> = ({ pathName }) => {
       title: 'Description',
       dataIndex: 'description',
       valueType: 'textarea',
+      copyable: true,
+      sorter: true,
+    },{
+      title: 'Is Active',
+      dataIndex: 'statusDelete',
+      valueType: 'switch',
+      render: (dom, entity) => {
+        return (
+          <> {entity.statusDelete? 'YA' : 'TIDAK'} </>
+
+
+        );
+      },
       copyable: true,
       sorter: true,
     },
@@ -486,11 +523,11 @@ const BaseCriteria: React.FC<any> = ({ pathName }) => {
         parentImageUuid={currentRow.uuid}
       />
 
-      <Drawer title="Basic Drawer" onClose={onClose} open={open}>
-        <p>Some contents...</p>
-        <p>Some contents...</p>
-        <p>Some contents...</p>
-      </Drawer>
+      {/*<Drawer title="Basic Drawer" open={true}>*/}
+      {/*  <p>Some contents...</p>*/}
+      {/*  <p>Some contents...</p>*/}
+      {/*  <p>Some contents...</p>*/}
+      {/*</Drawer>*/}
 
       <ModuleModalForm
         createModalOpen={createModalOpen}

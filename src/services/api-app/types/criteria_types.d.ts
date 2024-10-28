@@ -5,5 +5,6 @@ declare namespace API_TYPES {
     criteriaType:string;
     description:string;
     criteriaParent:CriteriaListItem;
+    statusDelete:boolean;
   } & DefaultItemResponse;
 }
