@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 
 import OperationTable from '@/components/Operation/OperationTable';
 import { history } from '@@/exports';
@@ -15,15 +15,15 @@ import ModuleCard from '@/components/Container/ModuleCard';
 import ModuleModalForm from '@/components/Container/ModuleModalForm';
 import ModuleTableList from '@/components/Container/ModuleTableList';
 import DrawerContainer from '@/components/Operation/DrawerContainer';
-import {getCriteria, getCriteriaByUuid, getCriteriaParent} from '@/services/api-app/api/criteria_api';
+import {getCriteria, getCriteriaByUuid, getCriteriaParent, getCriteriaTree} from '@/services/api-app/api/criteria_api';
 import {
   handleAddCriteria,
   handleRemoveCriteria,
   handleRemoveCriteriaList,
   handleUpdateCriteria,
 } from '@/services/api-app/handle/criteria_handle';
-import { AppstoreOutlined, DeleteFilled, TableOutlined } from '@ant-design/icons';
-import {Button, Col, Drawer, Row, Segmented, Space, Tooltip} from 'antd';
+import {DeleteFilled, DownOutlined} from '@ant-design/icons';
+import {Button, Col, Drawer, Row, Space, Tooltip, Tree, TreeDataNode} from 'antd';
 import StatisticDashboard from "@/pages/Criteria/components/StatisticDashboard";
 
 export const columnsModalFormCriteria: ProFormColumnsType[] = [
@@ -244,16 +244,69 @@ export const columnsProDescriptionCriteria: ProColumns<API_TYPES.CriteriaListIte
   },
 ];
 
+const treeDataJson: TreeDataNode[] = [
+  {
+    title: 'parent 1',
+    key: '1',
+    children: [
+      {
+        title: 'parent 1-0',
+        key: '2',
+        children: [
+          {
+            title: 'leaf',
+            key: '3',
+          },
+          {
+            title: 'leaf',
+            key: '4',
+          },
+          {
+            title: 'leaf',
+            key: '0-0-0-2',
+          },
+        ],
+      },
+      {
+        title: 'parent 1-1',
+        key: '0-0-1',
+        children: [
+          {
+            title: 'leaf',
+            key: '0-0-1-0',
+          },
+        ],
+      },
+      {
+        title: 'parent 1-2',
+        key: '0-0-2',
+        children: [
+          {
+            title: 'leaf',
+            key: '0-0-2-0',
+          },
+          {
+            title: 'leaf',
+            key: '0-0-2-1',
+          },
+        ],
+      },
+    ],
+  },
+];
+
 const BaseCriteria: React.FC<any> = ({ pathName }) => {
   const [currentRow, setCurrentRow] = useState<API_TYPES.CriteriaListItem>(
     {} as API_TYPES.CriteriaListItem,
   );
   const [showDrawer, setShowDrawer] = useState<boolean>(false);
+  const [showCriteriaTree, setShowCriteriaTree] = useState<boolean>(false);
   const actionRefProTable = useRef<ActionType>();
   const actionRefCard = useRef<ActionType>();
   const [createModalOpen, handleModalOpen] = useState<boolean>(false);
   const [isNew, setIsNew] = useState<boolean>(true);
   const [selectedRowsState, setSelectedRows] = useState<any[]>([]);
+  const [treeData, setTreeData] = useState<any[]>(treeDataJson);
 
   const pathNameLoc = pathName ? pathName : location.pathname;
 
@@ -300,6 +353,17 @@ const BaseCriteria: React.FC<any> = ({ pathName }) => {
     actionRefCard.current?.reload();
     setShowDrawer(false);
   };
+
+  useEffect(() => {
+    const options = { };
+    const params = {
+      current: 1,
+      pageSize: 200,
+    };
+    getCriteriaTree(params, options).then(value => {
+      setTreeData(value.data)
+    })
+  }, []);
 
   const columnsProTable: ProColumns<API_TYPES.CriteriaListItem>[] = [
     {
@@ -448,6 +512,7 @@ const BaseCriteria: React.FC<any> = ({ pathName }) => {
       </Row>
       {display === 'List' && (
         <ModuleTableList
+          setShowCriteriaTree={setShowCriteriaTree}
           setCurrentRow={setCurrentRow}
           setShowDrawer={setShowDrawer}
           actionRef={actionRefProTable}
@@ -523,11 +588,19 @@ const BaseCriteria: React.FC<any> = ({ pathName }) => {
         parentImageUuid={currentRow.uuid}
       />
 
-      {/*<Drawer title="Basic Drawer" open={true}>*/}
-      {/*  <p>Some contents...</p>*/}
-      {/*  <p>Some contents...</p>*/}
-      {/*  <p>Some contents...</p>*/}
-      {/*</Drawer>*/}
+      <Drawer title="Criteria Tree" open={showCriteriaTree}
+              onClose={() => {
+                // setCurrentRow({});
+                setShowCriteriaTree(false);
+              }}
+              closable={false}>
+        <Tree
+          showLine
+          switcherIcon={<DownOutlined />}
+          defaultExpandedKeys={['0-0-0']}
+          treeData={treeData}
+        />
+      </Drawer>
 
       <ModuleModalForm
         createModalOpen={createModalOpen}

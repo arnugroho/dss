@@ -64,6 +64,12 @@ export default [
         path: '/dss/criteria',
         component: './Criteria',
       },
+      {
+        name: 'Alternative',
+        icon: 'smile',
+        path: '/dss/alternnative',
+        component: './Alternative',
+      },
       // {
       //   name: 'monitor',
       //   icon: 'smile',

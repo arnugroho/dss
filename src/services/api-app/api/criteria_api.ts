@@ -11,6 +11,22 @@ export async function getCriteria(params: API_TYPES.TableParams, options?: { [ke
   });
 }
 
+export async function getCriteriaTree(params: API_TYPES.TableParams, options?: { [key: string]: any }) {
+  return request<API_TYPES.DefaultList>(`${API_URL}/${route}/paged/tree`, {
+    method: 'POST',
+    data: { ...params, filter: { ...params, ...options } },
+    ...(options || {}),
+  });
+}
+
+export async function getCriteriaChild(params: API_TYPES.TableParams, options?: { [key: string]: any }) {
+  return request<API_TYPES.DefaultList>(`${API_URL}/${route}/paged/child`, {
+    method: 'POST',
+    data: { ...params, filter: { ...params, ...options } },
+    ...(options || {}),
+  });
+}
+
 export async function getCriteriaParent(params: API_TYPES.TableParams, options?: { [key: string]: any }) {
   return request<API_TYPES.DefaultList>(`${API_URL}/${route}/paged/parent`, {
     method: 'POST',

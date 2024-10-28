@@ -1,6 +1,6 @@
+import { DeleteFilled, PlusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { ProTable } from '@ant-design/pro-components';
-import { Button, Space, Row, Col, Tooltip } from 'antd';
-import {DeleteFilled, PlusCircleOutlined, PlusOutlined} from '@ant-design/icons';
+import { Button, Col, Row, Space, Tooltip } from 'antd';
 import React from 'react';
 
 const ModuleTableList: React.FC<any> = ({
@@ -8,9 +8,10 @@ const ModuleTableList: React.FC<any> = ({
   columnsProTable,
   handleModalOpen,
   setIsNew,
+  setShowCriteriaTree,
   handleUpdate,
   handleRemove,
-  handleRemoveSelection = ()=>{},
+  handleRemoveSelection = () => {},
   loadPaged,
   setSelectedRows,
   paramsTable,
@@ -61,12 +62,12 @@ const ModuleTableList: React.FC<any> = ({
                 type="default"
                 key="treeview"
                 onClick={() => {
-
+                  setShowCriteriaTree(true);
                 }}
               >
                 <PlusCircleOutlined />
                 Tree View
-              </Button>
+              </Button>,
             ]}
             pagination={{
               defaultPageSize: 20,
@@ -101,7 +102,12 @@ const ModuleTableList: React.FC<any> = ({
               return (
                 <Space>
                   <Tooltip trigger={'hover'} placement={'bottom'} title="Delete">
-                    <Button shape="circle" icon={<DeleteFilled />} danger onClick={handleRemoveSelection}></Button>
+                    <Button
+                      shape="circle"
+                      icon={<DeleteFilled />}
+                      danger
+                      onClick={handleRemoveSelection}
+                    ></Button>
                   </Tooltip>
                 </Space>
               );
