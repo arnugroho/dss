@@ -11,7 +11,7 @@ const { REACT_APP_ENV = 'dev' } = process.env;
 export default defineConfig({
   define: {
     // API_URL: 'http://191.101.233.246:9001', // API address
-    API_URL: 'http://localhost:8080', // API address
+    API_URL: 'http://62.72.12.117:9898', // API address
 
   },
   /**
