@@ -15,4 +15,4 @@ docker stop andromedia
 echo "remove FE MKA DSS .."
 docker rm andromedia
 echo "run FE MKA DSS .."
-docker run -d --name=fe_dss --restart=always --ip 172.17.0.4 mka/dss
+docker run -d --name=fe_dss --restart=always --net=tenos-network --ip 172.19.0.4 mka/dss
