@@ -30,28 +30,24 @@ export const columnsProDescriptionAlternative: ProColumns<API_TYPES.AlternativeL
     dataIndex: 'alternativeName',
     valueType: 'text',
     copyable: true,
-    sorter: true,
   },
   {
     title: 'Bobot',
     dataIndex: 'alternativeWeight',
     valueType: 'text',
     copyable: true,
-    sorter: true,
   },
   {
     title: 'Tipe',
     dataIndex: 'alternativeType',
     valueType: 'text',
     copyable: true,
-    sorter: true,
   },
   {
     title: 'Description',
     dataIndex: 'description',
     valueType: 'textarea',
     copyable: true,
-    sorter: true,
   },
 ];
 
@@ -182,7 +178,6 @@ const BaseAlternative: React.FC<any> = ({ pathName }) => {
       title: 'Nama Alternative',
       dataIndex: 'alternativeName',
       valueType: 'text',
-      sorter: true,
       render: (dom, entity) => {
         return (
           <a
@@ -201,7 +196,6 @@ const BaseAlternative: React.FC<any> = ({ pathName }) => {
       dataIndex: 'description',
       valueType: 'textarea',
       copyable: true,
-      sorter: true,
     },
     {
       title: 'Is Active',
@@ -216,7 +210,6 @@ const BaseAlternative: React.FC<any> = ({ pathName }) => {
         );
       },
       copyable: true,
-      sorter: true,
     }
   ];
 

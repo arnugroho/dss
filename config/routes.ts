@@ -50,14 +50,20 @@ export default [
     routes: [
       {
         path: '/dss',
-        redirect: '/dss/analysis',
+        redirect: '/dss/dashboard',
       },
       {
-        name: 'Analysis',
+        name: 'Dashboard',
         icon: 'smile',
-        path: '/dss/analysis',
-        component: './dashboard/analysis',
+        path: '/dss/dashboard',
+        component: './dashboard/dss',
       },
+      // {
+      //   name: 'Analysis',
+      //   icon: 'smile',
+      //   path: '/dss/analysis',
+      //   component: './dashboard/analysis',
+      // },
       {
         name: 'Criteria',
         icon: 'smile',
@@ -271,7 +277,7 @@ export default [
   // },
   {
     path: '/',
-    redirect: '/dss/analysis',
+    redirect: '/dss/dashboard',
   },
   {
     component: '404',

@@ -13,9 +13,9 @@ const ModuleTableList: React.FC<any> = ({
   handleRemove,
   handleRemoveSelection = () => {},
   loadPaged,
-  setSelectedRows,
+  // setSelectedRows,
   paramsTable,
-  // title,
+  title,
   buttonNewVisibility = true,
   buttonTreeVisibility = true,
   handleChange = () => {},
@@ -26,7 +26,7 @@ const ModuleTableList: React.FC<any> = ({
         <Col span={24}>
           <ProTable<any, API_TYPES.TableParams>
             scroll={{ x: 'max-content' }}
-            // headerTitle={title}
+            headerTitle={title}
             actionRef={actionRef}
             rowKey="uuid"
             search={{
@@ -82,11 +82,11 @@ const ModuleTableList: React.FC<any> = ({
             request={loadPaged}
             columns={columnsProTable}
             params={paramsTable}
-            rowSelection={{
-              onChange: (_, selectedRows) => {
-                setSelectedRows(selectedRows);
-              },
-            }}
+            // rowSelection={{
+            //   onChange: (_, selectedRows) => {
+            //     setSelectedRows(selectedRows);
+            //   },
+            // }}
             tableAlertRender={({ selectedRowKeys, selectedRows, onCleanSelected }) => {
               return (
                 <Space size={24}>
