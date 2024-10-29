@@ -94,7 +94,7 @@ const defaultModal = [
     width: 'md',
     colProps: {
       xs: 24,
-      md: 24,
+      md: 12,
     },
     fieldProps: {
       style: {
@@ -153,10 +153,33 @@ const BaseAlternative: React.FC<any> = ({ pathName }) => {
 
   const columnsProTable: ProColumns<API_TYPES.AlternativeListItem>[] = [
     {
+      title: 'Operation',
+      dataIndex: 'option',
+      valueType: 'option',
+      render: (_text, record, _, action) => {
+        return (
+          <OperationTable
+            action={action}
+            reload={reload}
+            handleRemove={() => {
+              handleRemoveAlternative(record.uuid).then((value) => {
+                if (value) {
+                  reload();
+                }
+              });
+            }}
+            handleDetail={() => {
+              history.push(`${pathNameLoc}/${'menuDataItem.key'}`);
+            }}
+            menuDataItem={{key:record.uuid}}
+          />
+        );
+      },
+    },
+    {
       title: 'Nama Alternative',
       dataIndex: 'alternativeName',
       valueType: 'text',
-      editable: false,
       sorter: true,
       render: (dom, entity) => {
         return (
@@ -192,31 +215,7 @@ const BaseAlternative: React.FC<any> = ({ pathName }) => {
       },
       copyable: true,
       sorter: true,
-    },
-    {
-      title: 'Operation',
-      dataIndex: 'option',
-      valueType: 'option',
-      render: (_text, record, _, action) => {
-        return (
-          <OperationTable
-            action={action}
-            reload={reload}
-            handleRemove={() => {
-              handleRemoveAlternative(record.uuid).then((value) => {
-                if (value) {
-                  reload();
-                }
-              });
-            }}
-            handleDetail={() => {
-              history.push(`${pathNameLoc}/${'menuDataItem.key'}`);
-            }}
-            menuDataItem={{key:record.uuid}}
-          />
-        );
-      },
-    },
+    }
   ];
 
   const [columnsTable, setColumnsTable] = useState<any>(columnsProTable);
@@ -265,15 +264,17 @@ const BaseAlternative: React.FC<any> = ({ pathName }) => {
 
           setColumnsTable((prevState: any) => {
             return [
-              jsonTable,
-              ...prevState
+              ...prevState,
+              jsonTable
+
             ];
           });
 
         setColumnsModal((prevState: any) => {
           return [
-            jsonCr,
-            ...prevState
+            ...prevState,
+            jsonCr
+
           ];
         });
       })
@@ -374,7 +375,7 @@ const BaseAlternative: React.FC<any> = ({ pathName }) => {
         currentRow={currentRow}
         isDrawer={true}
         reload={reload}
-        columns={columnsProDescriptionAlternative}
+        columns={columnsTable}
         handleRemove={() => {
           handleRemoveAlternative(currentRow.uuid).then((value) => {
             if (value) {

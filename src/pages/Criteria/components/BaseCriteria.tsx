@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import OperationTable from '@/components/Operation/OperationTable';
 import { history } from '@@/exports';
@@ -8,28 +8,57 @@ import {
   getPageTitle,
   ProColumns,
   ProDescriptionsItemProps,
-  type ProFormColumnsType, ProFormDigit, ProFormSelect,
+  ProFormSelect,
+  type ProFormColumnsType,
 } from '@ant-design/pro-components';
 
 import ModuleCard from '@/components/Container/ModuleCard';
 import ModuleModalForm from '@/components/Container/ModuleModalForm';
 import ModuleTableList from '@/components/Container/ModuleTableList';
 import DrawerContainer from '@/components/Operation/DrawerContainer';
-import {getCriteria, getCriteriaByUuid, getCriteriaParent, getCriteriaTree} from '@/services/api-app/api/criteria_api';
+import StatisticDashboard from '@/pages/Criteria/components/StatisticDashboard';
+import {
+  getCriteria,
+  getCriteriaByUuid,
+  getCriteriaParent,
+  getCriteriaTree,
+} from '@/services/api-app/api/criteria_api';
 import {
   handleAddCriteria,
   handleRemoveCriteria,
   handleRemoveCriteriaList,
   handleUpdateCriteria,
 } from '@/services/api-app/handle/criteria_handle';
-import {DeleteFilled, DownOutlined} from '@ant-design/icons';
-import {Button, Col, Drawer, Row, Space, Tooltip, Tree, TreeDataNode} from 'antd';
-import StatisticDashboard from "@/pages/Criteria/components/StatisticDashboard";
+import { DeleteFilled, DownOutlined } from '@ant-design/icons';
+import { Button, Col, Drawer, Row, Space, Tooltip, Tree, TreeDataNode } from 'antd';
 
 export const columnsModalFormCriteria: ProFormColumnsType[] = [
   {
     title: 'Nama Kriteria',
     dataIndex: 'criteriaName',
+    valueType: 'text',
+    formItemProps: {
+      rules: [
+        {
+          required: true,
+          message: 'This field is required',
+        },
+      ],
+    },
+    width: 'md',
+    colProps: {
+      xs: 24,
+      md: 12,
+    },
+    fieldProps: {
+      style: {
+        // width: '200px',
+      },
+    },
+  },
+  {
+    title: 'Kode Kriteria',
+    dataIndex: 'criteriaCode',
     valueType: 'text',
     formItemProps: {
       rules: [
@@ -63,7 +92,7 @@ export const columnsModalFormCriteria: ProFormColumnsType[] = [
         <ProFormSelect
           showSearch
           request={async () => {
-            const options = { };
+            const options = {};
             const params = {
               current: 1,
               pageSize: 20,
@@ -118,15 +147,15 @@ export const columnsModalFormCriteria: ProFormColumnsType[] = [
         },
       ],
     },
-    renderFormItem: (item, { defaultRender, ...rest }, form) => {
-      const hasChild = form.getFieldValue('hasChild');
-      if (hasChild==='YA'){
-        form.setFieldsValue({ criteriaWeight: 0 });
-      }
-      return (
-        hasChild==='TIDAK' ? <ProFormDigit required={true}/>: <ProFormDigit disabled={true} placeholder={"0"}/>
-      );
-    },
+    // renderFormItem: (item, { defaultRender, ...rest }, form) => {
+    //   const hasChild = form.getFieldValue('hasChild');
+    //   if (hasChild==='YA'){
+    //     form.setFieldsValue({ criteriaWeight: 0 });
+    //   }
+    //   return (
+    //     hasChild==='TIDAK' ? <ProFormDigit required={true}/>: <ProFormDigit disabled={true} placeholder={"0"}/>
+    //   );
+    // },
     width: 'md',
     colProps: {
       xs: 24,
@@ -146,14 +175,20 @@ export const columnsModalFormCriteria: ProFormColumnsType[] = [
       xs: 24,
     },
     dataIndex: 'criteriaType',
-    renderFormItem: () => {
-      return (
+    renderFormItem: (item, { defaultRender, ...rest }, form) => {
+      const hasChild = form.getFieldValue('hasChild');
+      if (hasChild === 'YA') {
+        form.setFieldsValue({ criteriaType: 'TIDAK ADA' });
+      }
+      return hasChild === 'TIDAK' ? (
         <ProFormSelect
           valueEnum={{
             COST: 'COST',
             BENEFIT: 'BENEFIT',
           }}
         />
+      ) : (
+        <ProFormSelect disabled={true}></ProFormSelect>
       );
     },
     formItemProps: {
@@ -217,6 +252,13 @@ export const columnsProDescriptionCriteria: ProColumns<API_TYPES.CriteriaListIte
   {
     title: 'Nama Kriteria',
     dataIndex: 'criteriaName',
+    valueType: 'text',
+    copyable: true,
+    sorter: true,
+  },
+  {
+    title: 'Kode Kriteria',
+    dataIndex: 'criteriaCode',
     valueType: 'text',
     copyable: true,
     sorter: true,
@@ -352,87 +394,29 @@ const BaseCriteria: React.FC<any> = ({ pathName }) => {
     actionRefProTable.current?.reload();
     actionRefCard.current?.reload();
     setShowDrawer(false);
-  };
 
-  useEffect(() => {
-    const options = { };
+    const options = {};
     const params = {
       current: 1,
       pageSize: 200,
     };
-    getCriteriaTree(params, options).then(value => {
-      setTreeData(value.data)
-    })
+    getCriteriaTree(params, options).then((value) => {
+      setTreeData(value.data);
+    });
+  };
+
+  useEffect(() => {
+    const options = {};
+    const params = {
+      current: 1,
+      pageSize: 200,
+    };
+    getCriteriaTree(params, options).then((value) => {
+      setTreeData(value.data);
+    });
   }, []);
 
   const columnsProTable: ProColumns<API_TYPES.CriteriaListItem>[] = [
-    {
-      title: 'Nama Kriteria',
-      dataIndex: 'criteriaName',
-      valueType: 'text',
-      editable: false,
-      sorter: true,
-      render: (dom, entity) => {
-        return (
-          <a
-            onClick={() => {
-              setCurrentRow(entity);
-              setShowDrawer(true);
-            }}
-          >
-            {dom}
-          </a>
-        );
-      },
-    },
-    {
-      title: 'Parent',
-      dataIndex: ['criteriaParent','criteriaName'],
-      valueType: 'text',
-      editable: false,
-      sorter: true,
-    },
-    {
-      title: 'Bobot',
-      dataIndex: 'criteriaWeight',
-      valueType: 'digit',
-      copyable: true,
-      sorter: true,
-    },
-    {
-      title: 'Tipe',
-      dataIndex: 'criteriaType',
-      valueType: 'textarea',
-      editable: false,
-      sorter: true,
-    },
-    {
-      title: 'Memiliki Sub',
-      dataIndex: 'hasChild',
-      valueType: 'text',
-      editable:false,
-      sorter: true,
-    },
-    {
-      title: 'Description',
-      dataIndex: 'description',
-      valueType: 'textarea',
-      copyable: true,
-      sorter: true,
-    },{
-      title: 'Is Active',
-      dataIndex: 'statusDelete',
-      valueType: 'switch',
-      render: (dom, entity) => {
-        return (
-          <> {entity.statusDelete? 'YA' : 'TIDAK'} </>
-
-
-        );
-      },
-      copyable: true,
-      sorter: true,
-    },
     {
       title: 'Operation',
       dataIndex: 'option',
@@ -450,13 +434,77 @@ const BaseCriteria: React.FC<any> = ({ pathName }) => {
               });
             }}
             handleDetail={() => {
-              history.push(`${pathNameLoc}/${'menuDataItem.key'}`);
+              setCurrentRow(record);
+              handleModalOpen(true);
+              setIsNew(false);
             }}
-            menuDataItem={{key:record.uuid}}
+            menuDataItem={{ key: record.uuid }}
           />
         );
       },
     },
+    {
+      title: 'Nama Kriteria',
+      dataIndex: 'criteriaName',
+      valueType: 'text',
+      render: (dom, entity) => {
+        return (
+          <a
+            onClick={() => {
+              setCurrentRow(entity);
+              setShowDrawer(true);
+            }}
+          >
+            {dom}
+          </a>
+        );
+      },
+    },
+    {
+      title: 'Kode Kriteria',
+      dataIndex: 'criteriaCode',
+      valueType: 'text',
+    },
+    {
+      title: 'Parent',
+      dataIndex: ['criteriaParent', 'criteriaName'],
+      valueType: 'text',
+      editable: false,
+    },
+    {
+      title: 'Bobot',
+      dataIndex: 'criteriaWeight',
+      valueType: 'digit',
+      copyable: true,
+    },
+    {
+      title: 'Tipe',
+      dataIndex: 'criteriaType',
+      valueType: 'textarea',
+      editable: false,
+    },
+    {
+      title: 'Memiliki Sub',
+      dataIndex: 'hasChild',
+      valueType: 'text',
+      editable: false,
+    },
+    {
+      title: 'Description',
+      dataIndex: 'description',
+      valueType: 'textarea',
+      copyable: true,
+    },
+    {
+      title: 'Is Active',
+      dataIndex: 'statusDelete',
+      valueType: 'switch',
+      render: (dom, entity) => {
+        return <> {entity.statusDelete ? 'YA' : 'TIDAK'} </>;
+      },
+      copyable: true,
+      sorter: true,
+    }
   ];
 
   const [display, setDisplay] = useState('List');
@@ -563,9 +611,7 @@ const BaseCriteria: React.FC<any> = ({ pathName }) => {
         />
       )}
 
-      {display === 'Statistic' && (
-        <StatisticDashboard responsive={true}/>
-      )}
+      {display === 'Statistic' && <StatisticDashboard responsive={true} />}
 
       <DrawerContainer
         showDetail={showDrawer}
@@ -588,12 +634,15 @@ const BaseCriteria: React.FC<any> = ({ pathName }) => {
         parentImageUuid={currentRow.uuid}
       />
 
-      <Drawer title="Criteria Tree" open={showCriteriaTree}
-              onClose={() => {
-                // setCurrentRow({});
-                setShowCriteriaTree(false);
-              }}
-              closable={false}>
+      <Drawer
+        title="Criteria Tree"
+        open={showCriteriaTree}
+        onClose={() => {
+          // setCurrentRow({});
+          setShowCriteriaTree(false);
+        }}
+        closable={false}
+      >
         <Tree
           showLine
           switcherIcon={<DownOutlined />}

@@ -24,6 +24,7 @@ const ModuleTableList: React.FC<any> = ({
       <Row gutter={18}>
         <Col span={24}>
           <ProTable<any, API_TYPES.TableParams>
+            scroll={{ x: 'max-content' }}
             // headerTitle={title}
             actionRef={actionRef}
             rowKey="uuid"
