@@ -58,48 +58,48 @@ const DrawerContainer: React.FC<any> = ({
       closable={false}
     >
       <>
-        <Row justify="space-between" align="middle" style={{ paddingTop: 0, paddingBottom: 35 }}>
-          <Col>{/* <h3>{currentRow.accountName}</h3> */}</Col>
-          <Col>
-            <Space size={0}>
-              <Space size={5}>
-                <Tooltip trigger={'hover'} placement={'bottom'} title="Detail">
-                  <Button
-                    type="primary"
-                    shape="circle"
-                    key="detailConfig"
-                    icon={<LoginOutlined />}
-                    onClick={() => {
-                      handleDetail();
-                    }}
-                  ></Button>
-                </Tooltip>
-              </Space>
-              <Divider
-                style={{
-                  height: 20,
-                }}
-                type="vertical"
-              />
-              <Space size={5}>
-                <Tooltip trigger={'hover'} placement={'bottom'} title="Starred">
-                  <Button type="text" shape="default" icon={<StarOutlined />}></Button>
-                </Tooltip>
-              </Space>
-              <Divider
-                style={{
-                  height: 20,
-                }}
-                type="vertical"
-              />
-              <Space size={5}>
-                <Dropdown menu={{ items }} arrow={{ pointAtCenter: true }}>
-                  <Button type="text" shape="default" icon={<EllipsisOutlined />} />
-                </Dropdown>
-              </Space>
-            </Space>
-          </Col>
-        </Row>
+        {/*<Row justify="space-between" align="middle" style={{ paddingTop: 0, paddingBottom: 35 }}>*/}
+        {/*  <Col>/!* <h3>{currentRow.accountName}</h3> *!/</Col>*/}
+        {/*  <Col>*/}
+        {/*    <Space size={0}>*/}
+        {/*      <Space size={5}>*/}
+        {/*        <Tooltip trigger={'hover'} placement={'bottom'} title="Detail">*/}
+        {/*          <Button*/}
+        {/*            type="primary"*/}
+        {/*            shape="circle"*/}
+        {/*            key="detailConfig"*/}
+        {/*            icon={<LoginOutlined />}*/}
+        {/*            onClick={() => {*/}
+        {/*              handleDetail();*/}
+        {/*            }}*/}
+        {/*          ></Button>*/}
+        {/*        </Tooltip>*/}
+        {/*      </Space>*/}
+        {/*      <Divider*/}
+        {/*        style={{*/}
+        {/*          height: 20,*/}
+        {/*        }}*/}
+        {/*        type="vertical"*/}
+        {/*      />*/}
+        {/*      <Space size={5}>*/}
+        {/*        <Tooltip trigger={'hover'} placement={'bottom'} title="Starred">*/}
+        {/*          <Button type="text" shape="default" icon={<StarOutlined />}></Button>*/}
+        {/*        </Tooltip>*/}
+        {/*      </Space>*/}
+        {/*      <Divider*/}
+        {/*        style={{*/}
+        {/*          height: 20,*/}
+        {/*        }}*/}
+        {/*        type="vertical"*/}
+        {/*      />*/}
+        {/*      <Space size={5}>*/}
+        {/*        <Dropdown menu={{ items }} arrow={{ pointAtCenter: true }}>*/}
+        {/*          <Button type="text" shape="default" icon={<EllipsisOutlined />} />*/}
+        {/*        </Dropdown>*/}
+        {/*      </Space>*/}
+        {/*    </Space>*/}
+        {/*  </Col>*/}
+        {/*</Row>*/}
         <Row>
           <Col span={24}>
             <ProDescriptions
@@ -122,11 +122,11 @@ const DrawerContainer: React.FC<any> = ({
           orientation="center"
           style={{ marginTop: 100, marginBottom: 70 }}
         ></DividerAntd>
-        <Row>
-          <Col>
-            <h3>Gallery</h3>
-          </Col>
-        </Row>
+        {/*<Row>*/}
+        {/*  <Col>*/}
+        {/*    <h3>Gallery</h3>*/}
+        {/*  </Col>*/}
+        {/*</Row>*/}
       </>
     </Drawer>
   );

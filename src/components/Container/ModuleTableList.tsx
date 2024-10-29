@@ -17,6 +17,7 @@ const ModuleTableList: React.FC<any> = ({
   paramsTable,
   // title,
   buttonNewVisibility = true,
+  buttonTreeVisibility = true,
   handleChange = () => {},
 }) => {
   return (
@@ -59,16 +60,20 @@ const ModuleTableList: React.FC<any> = ({
               ) : (
                 <></>
               ),
-              <Button
-                type="default"
-                key="treeview"
-                onClick={() => {
-                  setShowCriteriaTree(true);
-                }}
-              >
-                <PlusCircleOutlined />
-                Tree View
-              </Button>,
+              buttonTreeVisibility ? (
+                <Button
+                  type="default"
+                  key="treeview"
+                  onClick={() => {
+                    setShowCriteriaTree(true);
+                  }}
+                >
+                  <PlusCircleOutlined />
+                  Tree View
+                </Button>
+              ) : (
+                <></>
+              ),
             ]}
             pagination={{
               defaultPageSize: 20,

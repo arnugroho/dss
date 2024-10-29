@@ -169,7 +169,9 @@ const BaseAlternative: React.FC<any> = ({ pathName }) => {
               });
             }}
             handleDetail={() => {
-              history.push(`${pathNameLoc}/${'menuDataItem.key'}`);
+              setCurrentRow(record);
+              handleModalOpen(true);
+              setIsNew(false);
             }}
             menuDataItem={{key:record.uuid}}
           />
@@ -233,7 +235,7 @@ const BaseAlternative: React.FC<any> = ({ pathName }) => {
       criteria.forEach(cr  => {
         let jsonCr = {
           title: cr.description,
-          dataIndex: cr.criteriaName,
+          dataIndex: cr.criteriaCode,
           valueType: 'digit',
           formItemProps: {
             rules: [
@@ -257,7 +259,7 @@ const BaseAlternative: React.FC<any> = ({ pathName }) => {
 
         let jsonTable = {
             title: cr.description,
-            dataIndex: cr.criteriaName,
+            dataIndex: cr.criteriaCode,
             valueType: 'digit',
             search:false,
           }
@@ -344,6 +346,7 @@ const BaseAlternative: React.FC<any> = ({ pathName }) => {
           actionRef={actionRefProTable}
           columnsProTable={columnsTable}
           handleModalOpen={handleModalOpen}
+          buttonTreeVisibility = {false}
           setIsNew={setIsNew}
           handleUpdate={(data: API_TYPES.AlternativeListItem) => {
             handleUpdateAlternative(data).then((value) => {
