@@ -257,9 +257,17 @@ const BaseDss: React.FC<any> = ({ pathName }) => {
         <Col span={7} style={{ margin: '3px' }}>
           <ModuleTableList
             title={'SAW'}
-            footer={()=> `Nilai terbesar adalah Kabupaten/Kota ${saw.alternativeName} \n` +
-              `, Sehingga Kabupaten/Kota ${saw.alternativeName}  terpilih sebagai alternatif terbaik.\n` +
-              ` Dengan demikian, Kabupaten/Kota paling rawan jika terjadi bencana adalah Kabupaten/Kota ${saw.alternativeName}`}
+            footer={() => {
+              return (
+                <>
+                  Nilai terbesar dari <b>SAW</b> adalah Kabupaten/Kota <b>{saw.alternativeName}, </b> <br />
+                  Sehingga Kabupaten/Kota <b>{saw.alternativeName}</b> terpilih sebagai alternatif
+                  terbaik.
+                  <br /> Dengan demikian, Kabupaten/Kota paling rawan jika terjadi bencana adalah
+                  Kabupaten/Kota <b>{saw.alternativeName}</b>
+                </>
+              );
+            }}
             setCurrentRow={setCurrentRow}
             setShowDrawer={setShowDrawer}
             actionRef={actionRefProTable}
@@ -268,11 +276,8 @@ const BaseDss: React.FC<any> = ({ pathName }) => {
             buttonNewVisibility={false}
             buttonTreeVisibility={false}
             setIsNew={setIsNew}
-            handleUpdate={() => {
-            }}
-            handleRemove={() => {
-
-            }}
+            handleUpdate={() => {}}
+            handleRemove={() => {}}
             loadPaged={getSawRank}
             setSelectedRows={setSelectedRows}
           />
@@ -280,9 +285,17 @@ const BaseDss: React.FC<any> = ({ pathName }) => {
         <Col span={7} style={{ margin: '3px' }}>
           <ModuleTableList
             title={'WP'}
-            footer={()=> `Nilai terbesar adalah Kabupaten/Kota ${wp.alternativeName} \n` +
-              `, Sehingga Kabupaten/Kota ${wp.alternativeName}  terpilih sebagai alternatif terbaik.\n` +
-              ` Dengan demikian, Kabupaten/Kota paling rawan jika terjadi bencana adalah Kabupaten/Kota ${wp.alternativeName}`}
+            footer={() => {
+              return (
+                <>
+                  Nilai terbesar dari <b>WP</b> adalah Kabupaten/Kota <b>{wp.alternativeName}, </b> <br />
+                  Sehingga Kabupaten/Kota <b>{wp.alternativeName}</b> terpilih sebagai alternatif
+                  terbaik.
+                  <br /> Dengan demikian, Kabupaten/Kota paling rawan jika terjadi bencana adalah
+                  Kabupaten/Kota <b>{wp.alternativeName}</b>
+                </>
+              );
+            }}
             setCurrentRow={setCurrentRow}
             setShowDrawer={setShowDrawer}
             actionRef={actionRefProTable}
@@ -291,11 +304,8 @@ const BaseDss: React.FC<any> = ({ pathName }) => {
             buttonNewVisibility={false}
             buttonTreeVisibility={false}
             setIsNew={setIsNew}
-            handleUpdate={() => {
-            }}
-            handleRemove={() => {
-
-            }}
+            handleUpdate={() => {}}
+            handleRemove={() => {}}
             loadPaged={getWpRank}
             setSelectedRows={setSelectedRows}
           />
@@ -303,9 +313,17 @@ const BaseDss: React.FC<any> = ({ pathName }) => {
         <Col span={7} style={{ margin: '3px' }}>
           <ModuleTableList
             title={'TOPSIS'}
-            footer={()=> `Nilai terbesar adalah Kabupaten/Kota ${topsis.alternativeName} \n` +
-              `, Sehingga Kabupaten/Kota ${topsis.alternativeName}  terpilih sebagai alternatif terbaik.\n` +
-              ` Dengan demikian, Kabupaten/Kota paling rawan jika terjadi bencana adalah Kabupaten/Kota ${topsis.alternativeName}`}
+            footer={() => {
+              return (
+                <>
+                  Nilai terbesar dari <b>TOPSIS</b> adalah Kabupaten/Kota <b>{topsis.alternativeName}, </b> <br />
+                  Sehingga Kabupaten/Kota <b>{topsis.alternativeName}</b> terpilih sebagai alternatif
+                  terbaik.
+                  <br /> Dengan demikian, Kabupaten/Kota paling rawan jika terjadi bencana adalah
+                  Kabupaten/Kota <b>{topsis.alternativeName}</b>
+                </>
+              );
+            }}
             setCurrentRow={setCurrentRow}
             setShowDrawer={setShowDrawer}
             actionRef={actionRefProTable}
@@ -314,11 +332,8 @@ const BaseDss: React.FC<any> = ({ pathName }) => {
             buttonNewVisibility={false}
             buttonTreeVisibility={false}
             setIsNew={setIsNew}
-            handleUpdate={() => {
-            }}
-            handleRemove={() => {
-
-            }}
+            handleUpdate={() => {}}
+            handleRemove={() => {}}
             loadPaged={getTopsisRank}
             setSelectedRows={setSelectedRows}
           />
