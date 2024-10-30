@@ -16,6 +16,7 @@ const ModuleTableList: React.FC<any> = ({
   // setSelectedRows,
   paramsTable,
   title,
+  footer,
   buttonNewVisibility = true,
   buttonTreeVisibility = true,
   handleChange = () => {},
@@ -27,6 +28,7 @@ const ModuleTableList: React.FC<any> = ({
           <ProTable<any, API_TYPES.TableParams>
             scroll={{ x: 'max-content' }}
             headerTitle={title}
+            footer={footer}
             actionRef={actionRef}
             rowKey="uuid"
             search={{

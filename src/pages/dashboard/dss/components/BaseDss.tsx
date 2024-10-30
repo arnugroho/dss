@@ -9,8 +9,7 @@ import {getAlternativeByUuid} from '@/services/api-app/api/alternative_api';
 import { getCriteriaChild } from '@/services/api-app/api/criteria_api';
 import {
   handleRemoveAlternative,
-  handleRemoveAlternativeList,
-  handleUpdateAlternative,
+  handleRemoveAlternativeList
 } from '@/services/api-app/handle/alternative_handle';
 import { DeleteFilled } from '@ant-design/icons';
 import { Button, Col, Row, Space, Tooltip } from 'antd';
@@ -130,6 +129,10 @@ const BaseDss: React.FC<any> = ({ pathName }) => {
   const [isNew, setIsNew] = useState<boolean>(true);
   const [selectedRowsState, setSelectedRows] = useState<any[]>([]);
   const [columnsModal, setColumnsModal] = useState<any>(defaultModal);
+  const [saw, setSaw] = useState({});
+  const [wp, setWp] = useState({});
+  const [topsis, setTopsis] = useState({});
+
 
   const pathNameLoc = pathName ? pathName : location.pathname;
 
@@ -230,6 +233,22 @@ const BaseDss: React.FC<any> = ({ pathName }) => {
         });
       });
     });
+
+    getSawRank(params, options).then(value => {
+        setSaw(value.data.find((item: { rank: number }) => item.rank === 1));
+
+      }
+    )
+    getWpRank(params, options).then(value => {
+        setWp(value.data.find((item: { rank: number }) => item.rank === 1));
+
+      }
+    )
+    getTopsisRank(params, options).then(value => {
+        setTopsis(value.data.find((item: { rank: number }) => item.rank === 1));
+
+      }
+    )
   }, []);
 
   return (
@@ -238,6 +257,9 @@ const BaseDss: React.FC<any> = ({ pathName }) => {
         <Col span={7} style={{ margin: '3px' }}>
           <ModuleTableList
             title={'SAW'}
+            footer={()=> `Nilai terbesar adalah Kabupaten/Kota ${saw.alternativeName} \n` +
+              `, Sehingga Kabupaten/Kota ${saw.alternativeName}  terpilih sebagai alternatif terbaik.\n` +
+              ` Dengan demikian, Kabupaten/Kota paling rawan jika terjadi bencana adalah Kabupaten/Kota ${saw.alternativeName}`}
             setCurrentRow={setCurrentRow}
             setShowDrawer={setShowDrawer}
             actionRef={actionRefProTable}
@@ -258,6 +280,9 @@ const BaseDss: React.FC<any> = ({ pathName }) => {
         <Col span={7} style={{ margin: '3px' }}>
           <ModuleTableList
             title={'WP'}
+            footer={()=> `Nilai terbesar adalah Kabupaten/Kota ${wp.alternativeName} \n` +
+              `, Sehingga Kabupaten/Kota ${wp.alternativeName}  terpilih sebagai alternatif terbaik.\n` +
+              ` Dengan demikian, Kabupaten/Kota paling rawan jika terjadi bencana adalah Kabupaten/Kota ${wp.alternativeName}`}
             setCurrentRow={setCurrentRow}
             setShowDrawer={setShowDrawer}
             actionRef={actionRefProTable}
@@ -278,6 +303,9 @@ const BaseDss: React.FC<any> = ({ pathName }) => {
         <Col span={7} style={{ margin: '3px' }}>
           <ModuleTableList
             title={'TOPSIS'}
+            footer={()=> `Nilai terbesar adalah Kabupaten/Kota ${topsis.alternativeName} \n` +
+              `, Sehingga Kabupaten/Kota ${topsis.alternativeName}  terpilih sebagai alternatif terbaik.\n` +
+              ` Dengan demikian, Kabupaten/Kota paling rawan jika terjadi bencana adalah Kabupaten/Kota ${topsis.alternativeName}`}
             setCurrentRow={setCurrentRow}
             setShowDrawer={setShowDrawer}
             actionRef={actionRefProTable}
