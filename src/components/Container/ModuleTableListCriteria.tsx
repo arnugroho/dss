@@ -82,9 +82,9 @@ const ModuleTableListCriteria: React.FC<any> = ({
               defaultPageSize: 20,
               showSizeChanger: true,
             }}
-            request={loadPaged}
+            request={(params) => loadPaged(params)}
             expandable={{
-              defaultExpandAllRows: true, // Expand all rows by default
+              defaultExpandedRowKeys: selectedRowKeys,
             }}
             columns={columnsProTable}
             params={paramsTable}
@@ -100,6 +100,9 @@ const ModuleTableListCriteria: React.FC<any> = ({
                   handleRemove(dataValue);
                 });
               },
+              getCheckboxProps: (record) => ({
+                style: record.isDisabled ? { display: 'none' } : {}, // Hide checkbox if `isDisabled` is true
+              }),
             }}
             tableAlertRender={({ selectedRows }) => {
               return (

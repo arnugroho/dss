@@ -17,7 +17,7 @@ import ModuleTableListCriteria from '@/components/Container/ModuleTableListCrite
 import DrawerContainer from '@/components/Operation/DrawerContainer';
 import StatisticDashboard from '@/pages/Criteria/components/StatisticDashboard';
 import {
-  getCriteria,
+  getCriteria, getCriteriaAllTree,
   getCriteriaByUuid,
   getCriteriaParent,
   getCriteriaTree,
@@ -597,7 +597,7 @@ const BaseCriteria: React.FC<any> = ({ pathName }) => {
               }
             });
           }}
-          loadPaged={getCriteria}
+          loadPaged={getCriteriaAllTree}
           setSelectedRows={setSelectedRows}
           selectedRowKeys={selectedRowsState}
           title={title}
