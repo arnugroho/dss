@@ -1,28 +1,22 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import OperationTable from '@/components/Operation/OperationTable';
 import { history } from '@@/exports';
-import {
-  ActionType,
-  FooterToolbar,
-  getPageTitle,
-  ProColumns,
-} from '@ant-design/pro-components';
+import { ActionType, getPageTitle, ProColumns } from '@ant-design/pro-components';
 
 import ModuleModalForm from '@/components/Container/ModuleModalForm';
-import ModuleTableList from '@/components/Container/ModuleTableList';
+import ModuleTableListCriteria from '@/components/Container/ModuleTableListCriteria';
 import DrawerContainer from '@/components/Operation/DrawerContainer';
-import {getAlternative, getAlternativeByUuid} from '@/services/api-app/api/alternative_api';
+import StatisticDashboard from '@/pages/Alternative/components/StatisticDashboard';
+import { getAlternative, getAlternativeByUuid } from '@/services/api-app/api/alternative_api';
+import { getCriteriaChild } from '@/services/api-app/api/criteria_api';
 import {
   handleAddAlternative,
   handleRemoveAlternative,
-  handleRemoveAlternativeList,
   handleUpdateAlternative,
 } from '@/services/api-app/handle/alternative_handle';
-import {DeleteFilled} from '@ant-design/icons';
-import {Button, Col, Row, Space, Tooltip} from 'antd';
-import StatisticDashboard from "@/pages/Alternative/components/StatisticDashboard";
-import {getCriteriaChild} from "@/services/api-app/api/criteria_api";
+import { Col, Row } from 'antd';
+import ModuleTableListAlternative from "@/components/Container/ModuleTableListAlternative";
 
 export const columnsProDescriptionAlternative: ProColumns<API_TYPES.AlternativeListItem>[] = [
   {
@@ -120,7 +114,8 @@ const defaultModal = [
         // width: '200px',
       },
     },
-  }]
+  },
+];
 
 const BaseAlternative: React.FC<any> = ({ pathName }) => {
   const [currentRow, setCurrentRow] = useState<API_TYPES.AlternativeListItem>(
@@ -133,7 +128,6 @@ const BaseAlternative: React.FC<any> = ({ pathName }) => {
   const [isNew, setIsNew] = useState<boolean>(true);
   const [selectedRowsState, setSelectedRows] = useState<any[]>([]);
   const [columnsModal, setColumnsModal] = useState<any>(defaultModal);
-
 
   const pathNameLoc = pathName ? pathName : location.pathname;
 
@@ -169,7 +163,7 @@ const BaseAlternative: React.FC<any> = ({ pathName }) => {
               handleModalOpen(true);
               setIsNew(false);
             }}
-            menuDataItem={{key:record.uuid}}
+            menuDataItem={{ key: record.uuid }}
           />
         );
       },
@@ -201,31 +195,26 @@ const BaseAlternative: React.FC<any> = ({ pathName }) => {
       title: 'Is Active',
       dataIndex: 'statusDelete',
       valueType: 'switch',
-      search:false,
+      search: false,
       render: (dom, entity) => {
-        return (
-          <> {entity.statusDelete? 'YA' : 'TIDAK'} </>
-
-
-        );
+        return <> {entity.statusDelete ? 'YA' : 'TIDAK'} </>;
       },
       copyable: true,
-    }
+    },
   ];
 
   const [columnsTable, setColumnsTable] = useState<any>(columnsProTable);
 
-
   useEffect(() => {
-    const options = { };
+    const options = {};
     const params = {
       current: 1,
       pageSize: 200,
     };
 
-    getCriteriaChild(params, options).then(value => {
+    getCriteriaChild(params, options).then((value) => {
       let criteria = value.data as [];
-      criteria.forEach(cr  => {
+      criteria.forEach((cr) => {
         let jsonCr = {
           title: cr.description,
           dataIndex: cr.criteriaCode,
@@ -251,37 +240,42 @@ const BaseAlternative: React.FC<any> = ({ pathName }) => {
         };
 
         let jsonTable = {
-            title: cr.description,
-            dataIndex: cr.criteriaCode,
-            valueType: 'digit',
-            search:false,
-          }
+          title: cr.description,
+          dataIndex: cr.criteriaCode,
+          valueType: 'digit',
+          search: false,
+        };
 
-          setColumnsTable((prevState: any) => {
-            return [
-              ...prevState,
-              jsonTable
-
-            ];
-          });
+        setColumnsTable((prevState: any) => {
+          return [...prevState, jsonTable];
+        });
 
         setColumnsModal((prevState: any) => {
-          return [
-            ...prevState,
-            jsonCr
-
-          ];
+          return [...prevState, jsonCr];
         });
-      })
-    })
-
+      });
+    });
   }, []);
 
-
-
-
-
   const [display, setDisplay] = useState('List');
+  useEffect(() => {
+    const options = {};
+    const params = {
+      current: 1,
+      pageSize: 20,
+    };
+    getAlternative(params, options).then((value) => {
+      value.data.forEach((value: { statusDelete: boolean; uuid: any }) => {
+        setSelectedRows((prevState: any) => {
+          if (value.statusDelete) {
+            return [...prevState, value.uuid];
+          } else {
+            return prevState;
+          }
+        });
+      });
+    });
+  }, []);
 
   return (
     <>
@@ -333,13 +327,13 @@ const BaseAlternative: React.FC<any> = ({ pathName }) => {
         </Col>
       </Row>
       {display === 'List' && (
-        <ModuleTableList
+        <ModuleTableListAlternative
           setCurrentRow={setCurrentRow}
           setShowDrawer={setShowDrawer}
           actionRef={actionRefProTable}
           columnsProTable={columnsTable}
           handleModalOpen={handleModalOpen}
-          buttonTreeVisibility = {false}
+          buttonTreeVisibility={false}
           setIsNew={setIsNew}
           handleUpdate={(data: API_TYPES.AlternativeListItem) => {
             handleUpdateAlternative(data).then((value) => {
@@ -357,13 +351,12 @@ const BaseAlternative: React.FC<any> = ({ pathName }) => {
           }}
           loadPaged={getAlternative}
           setSelectedRows={setSelectedRows}
+          selectedRowKeys={selectedRowsState}
           title={title}
         />
       )}
 
-      {display === 'Statistic' && (
-        <StatisticDashboard responsive={true}/>
-      )}
+      {display === 'Statistic' && <StatisticDashboard responsive={true} />}
 
       <DrawerContainer
         showDetail={showDrawer}
@@ -413,45 +406,6 @@ const BaseAlternative: React.FC<any> = ({ pathName }) => {
         title={title}
         columnsModalForm={columnsModal}
       />
-
-      {selectedRowsState.length > 0 && (
-        <FooterToolbar
-          style={{
-            right: 150,
-            width: `calc(40%)`,
-            fontSize: 14,
-          }}
-          extra={
-            <Space size={25}>
-              <span>
-                Selected <a style={{ fontWeight: 600 }}>{selectedRowsState.length}</a> item
-              </span>
-              <span>
-                <Button type="dashed" onClick={reload}>
-                  Cancel Selection
-                </Button>
-              </span>
-              <span>Number of selected items: {selectedRowsState.length} </span>
-            </Space>
-          }
-        >
-          <Tooltip trigger={'hover'} placement={'top'} title="Delete">
-            <Button
-              shape="circle"
-              danger
-              onClick={() => {
-                handleRemoveAlternativeList(selectedRowsState).then((value) => {
-                  if (value) {
-                    setSelectedRows([]);
-                    reload();
-                  }
-                });
-              }}
-              icon={<DeleteFilled />}
-            ></Button>
-          </Tooltip>
-        </FooterToolbar>
-      )}
     </>
   );
 };

@@ -3,17 +3,18 @@ import React, { useEffect, useRef, useState } from 'react';
 import { history } from '@@/exports';
 import { ActionType, FooterToolbar, getPageTitle, ProColumns } from '@ant-design/pro-components';
 
-import ModuleTableList from '@/components/Container/ModuleTableList';
+import ModuleTableListCriteria from '@/components/Container/ModuleTableListCriteria';
 import DrawerContainer from '@/components/Operation/DrawerContainer';
-import {getAlternativeByUuid} from '@/services/api-app/api/alternative_api';
+import { getAlternativeByUuid } from '@/services/api-app/api/alternative_api';
 import { getCriteriaChild } from '@/services/api-app/api/criteria_api';
+import { getSawRank, getTopsisRank, getWpRank } from '@/services/api-app/api/dssrank_api';
 import {
   handleRemoveAlternative,
-  handleRemoveAlternativeList
+  handleRemoveAlternativeList,
 } from '@/services/api-app/handle/alternative_handle';
 import { DeleteFilled } from '@ant-design/icons';
 import { Button, Col, Row, Space, Tooltip } from 'antd';
-import {getSawRank, getTopsisRank, getWpRank} from "@/services/api-app/api/dssrank_api";
+import ModuleTableListDashboard from "@/components/Container/ModuleTableListDashboard";
 
 export const columnsProDescriptionAlternative: ProColumns<API_TYPES.AlternativeListItem>[] = [
   {
@@ -129,10 +130,9 @@ const BaseDss: React.FC<any> = ({ pathName }) => {
   const [isNew, setIsNew] = useState<boolean>(true);
   const [selectedRowsState, setSelectedRows] = useState<any[]>([]);
   const [columnsModal, setColumnsModal] = useState<any>(defaultModal);
-  const [saw, setSaw] = useState({});
-  const [wp, setWp] = useState({});
-  const [topsis, setTopsis] = useState({});
-
+  const [saw, setSaw] = useState({ alternativeName: '' });
+  const [wp, setWp] = useState({ alternativeName: '' });
+  const [topsis, setTopsis] = useState({ alternativeName: '' });
 
   const pathNameLoc = pathName ? pathName : location.pathname;
 
@@ -156,12 +156,10 @@ const BaseDss: React.FC<any> = ({ pathName }) => {
         return (
           <a
             onClick={() => {
-
-              getAlternativeByUuid(entity.uuid).then(value => {
-                setCurrentRow({...entity, ...value.data})
+              getAlternativeByUuid(entity.uuid).then((value) => {
+                setCurrentRow({ ...entity, ...value.data });
                 setShowDrawer(true);
-              })
-
+              });
             }}
           >
             {dom}
@@ -234,37 +232,40 @@ const BaseDss: React.FC<any> = ({ pathName }) => {
       });
     });
 
-    getSawRank(params, options).then(value => {
+    getSawRank(params, options).then((value) => {
+      if (value.data.length > 0) {
         setSaw(value.data.find((item: { rank: number }) => item.rank === 1));
-
       }
-    )
-    getWpRank(params, options).then(value => {
+    });
+    getWpRank(params, options).then((value) => {
+      if (value.data.length > 0) {
         setWp(value.data.find((item: { rank: number }) => item.rank === 1));
-
       }
-    )
-    getTopsisRank(params, options).then(value => {
+    });
+    getTopsisRank(params, options).then((value) => {
+      if (value.data.length > 0) {
         setTopsis(value.data.find((item: { rank: number }) => item.rank === 1));
-
       }
-    )
+    });
   }, []);
 
   return (
     <>
       <Row>
         <Col span={7} style={{ margin: '3px' }}>
-          <ModuleTableList
+          <ModuleTableListDashboard
             title={'SAW'}
             footer={() => {
               return (
                 <>
-                  Nilai terbesar dari <b>SAW</b> adalah Kabupaten/Kota <b>{saw.alternativeName}, </b> <br />
-                  Sehingga Kabupaten/Kota <b>{saw.alternativeName}</b> terpilih sebagai alternatif
-                  terbaik.
+                  Nilai terbesar dari <b>SAW</b> adalah Kabupaten/Kota{' '}
+                  <b>{saw.alternativeName ? saw.alternativeName : ''}, </b> <br />
+                  Sehingga Kabupaten/Kota <b>
+                    {saw.alternativeName ? saw.alternativeName : ''}
+                  </b>{' '}
+                  terpilih sebagai alternatif terbaik.
                   <br /> Dengan demikian, Kabupaten/Kota paling rawan jika terjadi bencana adalah
-                  Kabupaten/Kota <b>{saw.alternativeName}</b>
+                  Kabupaten/Kota <b>{saw.alternativeName ? saw.alternativeName : ''}</b>
                 </>
               );
             }}
@@ -283,16 +284,17 @@ const BaseDss: React.FC<any> = ({ pathName }) => {
           />
         </Col>
         <Col span={7} style={{ margin: '3px' }}>
-          <ModuleTableList
+          <ModuleTableListCriteria
             title={'WP'}
             footer={() => {
               return (
                 <>
-                  Nilai terbesar dari <b>WP</b> adalah Kabupaten/Kota <b>{wp.alternativeName}, </b> <br />
-                  Sehingga Kabupaten/Kota <b>{wp.alternativeName}</b> terpilih sebagai alternatif
-                  terbaik.
+                  Nilai terbesar dari <b>WP</b> adalah Kabupaten/Kota{' '}
+                  <b>{wp.alternativeName ? wp.alternativeName : ''}, </b> <br />
+                  Sehingga Kabupaten/Kota <b>{wp.alternativeName ? wp.alternativeName : ''}</b>{' '}
+                  terpilih sebagai alternatif terbaik.
                   <br /> Dengan demikian, Kabupaten/Kota paling rawan jika terjadi bencana adalah
-                  Kabupaten/Kota <b>{wp.alternativeName}</b>
+                  Kabupaten/Kota <b>{wp.alternativeName ? wp.alternativeName : ''}</b>
                 </>
               );
             }}
@@ -311,16 +313,18 @@ const BaseDss: React.FC<any> = ({ pathName }) => {
           />
         </Col>
         <Col span={7} style={{ margin: '3px' }}>
-          <ModuleTableList
+          <ModuleTableListCriteria
             title={'TOPSIS'}
             footer={() => {
               return (
                 <>
-                  Nilai terbesar dari <b>TOPSIS</b> adalah Kabupaten/Kota <b>{topsis.alternativeName}, </b> <br />
-                  Sehingga Kabupaten/Kota <b>{topsis.alternativeName}</b> terpilih sebagai alternatif
-                  terbaik.
+                  Nilai terbesar dari <b>TOPSIS</b> adalah Kabupaten/Kota{' '}
+                  <b>{topsis.alternativeName ? topsis.alternativeName : ''}, </b> <br />
+                  Sehingga Kabupaten/Kota{' '}
+                  <b>{topsis.alternativeName ? topsis.alternativeName : ''}</b> terpilih sebagai
+                  alternatif terbaik.
                   <br /> Dengan demikian, Kabupaten/Kota paling rawan jika terjadi bencana adalah
-                  Kabupaten/Kota <b>{topsis.alternativeName}</b>
+                  Kabupaten/Kota <b>{topsis.alternativeName ? topsis.alternativeName : ''}</b>
                 </>
               );
             }}

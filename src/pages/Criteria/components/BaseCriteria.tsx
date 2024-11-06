@@ -4,7 +4,6 @@ import OperationTable from '@/components/Operation/OperationTable';
 import { history } from '@@/exports';
 import {
   ActionType,
-  FooterToolbar,
   getPageTitle,
   ProColumns,
   ProDescriptionsItemProps,
@@ -14,7 +13,7 @@ import {
 
 import ModuleCard from '@/components/Container/ModuleCard';
 import ModuleModalForm from '@/components/Container/ModuleModalForm';
-import ModuleTableList from '@/components/Container/ModuleTableList';
+import ModuleTableListCriteria from '@/components/Container/ModuleTableListCriteria';
 import DrawerContainer from '@/components/Operation/DrawerContainer';
 import StatisticDashboard from '@/pages/Criteria/components/StatisticDashboard';
 import {
@@ -26,11 +25,10 @@ import {
 import {
   handleAddCriteria,
   handleRemoveCriteria,
-  handleRemoveCriteriaList,
   handleUpdateCriteria,
 } from '@/services/api-app/handle/criteria_handle';
-import { DeleteFilled, DownOutlined } from '@ant-design/icons';
-import { Button, Col, Drawer, Row, Space, Tooltip, Tree, TreeDataNode } from 'antd';
+import { DownOutlined } from '@ant-design/icons';
+import { Col, Drawer, Row, Tree, TreeDataNode } from 'antd';
 
 export const columnsModalFormCriteria: ProFormColumnsType[] = [
   {
@@ -577,7 +575,7 @@ const BaseCriteria: React.FC<any> = ({ pathName }) => {
         </Col>
       </Row>
       {display === 'List' && (
-        <ModuleTableList
+        <ModuleTableListCriteria
           setShowCriteriaTree={setShowCriteriaTree}
           setCurrentRow={setCurrentRow}
           setShowDrawer={setShowDrawer}
@@ -697,45 +695,6 @@ const BaseCriteria: React.FC<any> = ({ pathName }) => {
         title={title}
         columnsModalForm={columnsModalFormCriteria}
       />
-
-      {selectedRowsState.length > 0 && (
-        <FooterToolbar
-          style={{
-            right: 150,
-            width: `calc(40%)`,
-            fontSize: 14,
-          }}
-          extra={
-            <Space size={25}>
-              <span>
-                Selected <a style={{ fontWeight: 600 }}>{selectedRowsState.length}</a> item
-              </span>
-              <span>
-                <Button type="dashed" onClick={reload}>
-                  Cancel Selection
-                </Button>
-              </span>
-              <span>Number of selected items: {selectedRowsState.length} </span>
-            </Space>
-          }
-        >
-          <Tooltip trigger={'hover'} placement={'top'} title="Delete">
-            <Button
-              shape="circle"
-              danger
-              onClick={() => {
-                handleRemoveCriteriaList(selectedRowsState).then((value) => {
-                  if (value) {
-                    setSelectedRows([]);
-                    reload();
-                  }
-                });
-              }}
-              icon={<DeleteFilled />}
-            ></Button>
-          </Tooltip>
-        </FooterToolbar>
-      )}
     </>
   );
 };

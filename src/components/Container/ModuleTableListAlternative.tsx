@@ -89,11 +89,16 @@ const ModuleTableList: React.FC<any> = ({
               selectedRowKeys,
               onChange: (_selectedKey) => {
                 setSelectedRows(_selectedKey);
-                let selectedData = selectedRowKeys.filter((item) => !_selectedKey.includes(item));
+                let selectedData = selectedRowKeys.filter(
+                  (item: React.Key) => !_selectedKey.includes(item),
+                );
                 if (selectedData.length === 0) {
                   selectedData = _selectedKey.filter((item) => !selectedRowKeys.includes(item));
                 }
-                handleRemove(selectedData);
+                selectedData.forEach((dataValue: any) => {
+                  handleRemove(dataValue);
+                });
+
               },
             }}
             tableAlertRender={({ selectedRows }) => {
@@ -109,7 +114,7 @@ const ModuleTableList: React.FC<any> = ({
                   {/*  /!*  Cancel Selection*!/*/}
                   {/*  /!*</Button>*!/*/}
                   {/*</span>*/}
-                  <span>{`Number of selected items: ${selectedRows.length} `}</span>
+                  <span>{`Alternatif Aktif: ${selectedRows.length} `}</span>
                 </Space>
               );
             }}
