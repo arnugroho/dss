@@ -504,10 +504,28 @@ const BaseCriteria: React.FC<any> = ({ pathName }) => {
       },
       copyable: true,
       sorter: true,
-    }
+    },
   ];
 
   const [display, setDisplay] = useState('List');
+  useEffect(() => {
+    const options = {};
+    const params = {
+      current: 1,
+      pageSize: 20,
+    };
+    getCriteria(params, options).then(value => {
+      value.data.forEach((value: { statusDelete: boolean; uuid: any }) => {
+        setSelectedRows((prevState: any) => {
+          if (value.statusDelete) {
+            return [...prevState, value.uuid];
+          } else {
+            return prevState;
+          }
+        });
+      });
+    })
+  }, []);
 
   return (
     <>
@@ -583,6 +601,7 @@ const BaseCriteria: React.FC<any> = ({ pathName }) => {
           }}
           loadPaged={getCriteria}
           setSelectedRows={setSelectedRows}
+          selectedRowKeys={selectedRowsState}
           title={title}
         />
       )}

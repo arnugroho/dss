@@ -1,6 +1,6 @@
-import { DeleteFilled, PlusCircleOutlined, PlusOutlined } from '@ant-design/icons';
+import { PlusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { ProTable } from '@ant-design/pro-components';
-import { Button, Col, Row, Space, Tooltip } from 'antd';
+import { Button, Col, Row, Space } from 'antd';
 import React from 'react';
 
 const ModuleTableList: React.FC<any> = ({
@@ -12,8 +12,9 @@ const ModuleTableList: React.FC<any> = ({
   handleUpdate,
   handleRemove,
   handleRemoveSelection = () => {},
+  selectedRowKeys,
   loadPaged,
-  // setSelectedRows,
+  setSelectedRows,
   paramsTable,
   title,
   footer,
@@ -84,24 +85,30 @@ const ModuleTableList: React.FC<any> = ({
             request={loadPaged}
             columns={columnsProTable}
             params={paramsTable}
-            // rowSelection={{
-            //   onChange: (_, selectedRows) => {
-            //     setSelectedRows(selectedRows);
-            //   },
-            // }}
-            tableAlertRender={({ selectedRowKeys, selectedRows, onCleanSelected }) => {
+            rowSelection={{
+              selectedRowKeys,
+              onChange: (_selectedKey) => {
+                setSelectedRows(_selectedKey);
+                let selectedData = selectedRowKeys.filter((item) => !_selectedKey.includes(item));
+                if (selectedData.length === 0) {
+                  selectedData = _selectedKey.filter((item) => !selectedRowKeys.includes(item));
+                }
+                handleRemove(selectedData);
+              },
+            }}
+            tableAlertRender={({ selectedRows }) => {
               return (
                 <Space size={24}>
-                  <span>
-                    Selected {selectedRowKeys.length} item
-                    <Button
-                      type="dashed"
-                      style={{ marginInlineStart: 12 }}
-                      onClick={onCleanSelected}
-                    >
-                      Cancel Selection
-                    </Button>
-                  </span>
+                  {/*<span>*/}
+                  {/*  Selected {selectedRowKeys.length} item*/}
+                  {/*  /!*<Button*!/*/}
+                  {/*  /!*  type="dashed"*!/*/}
+                  {/*  /!*  style={{ marginInlineStart: 12 }}*!/*/}
+                  {/*  /!*  onClick={onCleanSelected}*!/*/}
+                  {/*  /!*>*!/*/}
+                  {/*  /!*  Cancel Selection*!/*/}
+                  {/*  /!*</Button>*!/*/}
+                  {/*</span>*/}
                   <span>{`Number of selected items: ${selectedRows.length} `}</span>
                 </Space>
               );
@@ -109,14 +116,14 @@ const ModuleTableList: React.FC<any> = ({
             tableAlertOptionRender={() => {
               return (
                 <Space>
-                  <Tooltip trigger={'hover'} placement={'bottom'} title="Delete">
-                    <Button
-                      shape="circle"
-                      icon={<DeleteFilled />}
-                      danger
-                      onClick={handleRemoveSelection}
-                    ></Button>
-                  </Tooltip>
+                  {/*<Tooltip trigger={'hover'} placement={'bottom'} title="Delete">*/}
+                  {/*  <Button*/}
+                  {/*    shape="circle"*/}
+                  {/*    icon={<DeleteFilled />}*/}
+                  {/*    danger*/}
+                  {/*    onClick={handleRemoveSelection}*/}
+                  {/*  ></Button>*/}
+                  {/*</Tooltip>*/}
                 </Space>
               );
             }}
