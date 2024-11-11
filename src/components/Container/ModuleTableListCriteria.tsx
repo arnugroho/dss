@@ -90,14 +90,18 @@ const ModuleTableListCriteria: React.FC<any> = ({
             params={paramsTable}
             rowSelection={{
               selectedRowKeys,
-              onChange: (_selectedKey) => {
+              onChange: (_selectedKey, selectedRows) => {
+                // di filter khusus yg gak punya chiild
+                const filteredSelectedRows = selectedRows.filter(item => item.hasChild === 'TIDAK').map(item => item.uuid);
+
                 setSelectedRows(_selectedKey);
                 let selectedData = selectedRowKeys.filter((item) => !_selectedKey.includes(item));
                 if (selectedData.length === 0) {
                   selectedData = _selectedKey.filter((item) => !selectedRowKeys.includes(item));
                 }
+                setSelectedRows(filteredSelectedRows)
                 selectedData.forEach((dataValue: any) => {
-                  handleRemove(dataValue);
+                    handleRemove(dataValue);
                 });
               },
               getCheckboxProps: (record) => ({

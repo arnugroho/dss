@@ -513,9 +513,10 @@ const BaseCriteria: React.FC<any> = ({ pathName }) => {
       pageSize: 20,
     };
     getCriteria(params, options).then(value => {
-      value.data.forEach((value: { statusDelete: boolean; uuid: any }) => {
+      value.data.forEach((value: { statusDelete: boolean; uuid: any; hasChild: string }) => {
+        console.log(value)
         setSelectedRows((prevState: any) => {
-          if (value.statusDelete) {
+          if (value.statusDelete && value.hasChild === 'TIDAK') {
             return [...prevState, value.uuid];
           } else {
             return prevState;
