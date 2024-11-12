@@ -15,6 +15,37 @@ import {
 import { DeleteFilled } from '@ant-design/icons';
 import {Alert, Button, Col, Row, Space, Tooltip} from 'antd';
 
+export const columnsProDescriptionAlternative: ProColumns<API_TYPES.AlternativeListItem>[] = [
+  {
+    title: 'Nama Kriteria',
+    dataIndex: 'alternativeName',
+    valueType: 'text',
+    copyable: true,
+    sorter: true,
+  },
+  {
+    title: 'Bobot',
+    dataIndex: 'alternativeWeight',
+    valueType: 'text',
+    copyable: true,
+    sorter: true,
+  },
+  {
+    title: 'Tipe',
+    dataIndex: 'alternativeType',
+    valueType: 'text',
+    copyable: true,
+    sorter: true,
+  },
+  {
+    title: 'Description',
+    dataIndex: 'description',
+    valueType: 'textarea',
+    copyable: true,
+    sorter: true,
+  },
+];
+
 const defaultModal = [
   {
     title: 'Nama Alternative',
@@ -149,6 +180,71 @@ const BaseDss: React.FC<any> = ({ pathName }) => {
   useEffect(() => {
     getSumWeightAll().then((value) => {
       setBobot(value.data);
+    });
+    const options = {};
+    const params = {
+      current: 1,
+      pageSize: 200,
+    };
+
+    getCriteriaChild(params, options).then((value) => {
+      let criteria = value.data as [];
+      criteria.forEach((cr) => {
+        let jsonCr = {
+          title: cr.description,
+          dataIndex: cr.criteriaCode,
+          valueType: 'digit',
+          formItemProps: {
+            rules: [
+              {
+                required: true,
+                message: 'This field is required',
+              },
+            ],
+          },
+          width: 'md',
+          colProps: {
+            xs: 24,
+            md: 12,
+          },
+          fieldProps: {
+            style: {
+              // width: '200px',
+            },
+          },
+        };
+
+        let jsonTable = {
+          title: cr.description,
+          dataIndex: cr.criteriaCode,
+          valueType: 'digit',
+          search: false,
+        };
+
+        setColumnsTable((prevState: any) => {
+          return [...prevState, jsonTable];
+        });
+
+        setColumnsModal((prevState: any) => {
+          return [...prevState, jsonCr];
+        });
+      });
+    });
+
+    getSawRank(params, options).then((value) => {
+      if (value.data.length > 0) {
+        setSaw(value.data.find((item: { rank: number }) => item.rank === 1));
+      }
+    });
+    getWpRank(params, options).then((value) => {
+      if (value.data.length > 0) {
+        setWp(value.data.find((item: { rank: number }) => item.rank === 1));
+      }
+    });
+    getTopsisRank(params, options).then((value) => {
+      if (value.data.length > 0) {
+        setTopsis(value.data.find((item: { rank: number }) => item.rank === 1));
+      }
     });
   }, []);
 
