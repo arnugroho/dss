@@ -32,11 +32,12 @@ const ModuleTableListCriteria: React.FC<any> = ({
             footer={footer}
             actionRef={actionRef}
             rowKey="uuid"
-            search={{
-              filterType: 'query',
-              searchText: 'Search',
-              labelWidth: 'auto',
-            }}
+            // search={{
+            //   filterType: 'query',
+            //   searchText: 'Search',
+            //   labelWidth: 'auto',
+            // }}
+            search={false}
             onChange={handleChange}
             editable={{
               type: 'multiple',

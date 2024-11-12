@@ -54,7 +54,9 @@ export const handleAddCriteria = async (fields: API_TYPES.CriteriaListItem) => {
       if (result.status === 200) {
         return true;
       } else {
-        return true;
+        console.log(result.message)
+        message.error(result.message)
+        return false;
       }
     })
     .catch(() => {

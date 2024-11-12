@@ -1,9 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 
 import { history } from '@@/exports';
-import { ActionType, FooterToolbar, getPageTitle, ProColumns } from '@ant-design/pro-components';
+import { ActionType, FooterToolbar, ProColumns } from '@ant-design/pro-components';
 
-import ModuleTableListCriteria from '@/components/Container/ModuleTableListCriteria';
 import DrawerContainer from '@/components/Operation/DrawerContainer';
 import { getAlternativeByUuid } from '@/services/api-app/api/alternative_api';
 import { getCriteriaChild } from '@/services/api-app/api/criteria_api';
@@ -15,37 +14,6 @@ import {
 import { DeleteFilled } from '@ant-design/icons';
 import { Button, Col, Row, Space, Tooltip } from 'antd';
 import ModuleTableListDashboard from "@/components/Container/ModuleTableListDashboard";
-
-export const columnsProDescriptionAlternative: ProColumns<API_TYPES.AlternativeListItem>[] = [
-  {
-    title: 'Nama Kriteria',
-    dataIndex: 'alternativeName',
-    valueType: 'text',
-    copyable: true,
-    sorter: true,
-  },
-  {
-    title: 'Bobot',
-    dataIndex: 'alternativeWeight',
-    valueType: 'text',
-    copyable: true,
-    sorter: true,
-  },
-  {
-    title: 'Tipe',
-    dataIndex: 'alternativeType',
-    valueType: 'text',
-    copyable: true,
-    sorter: true,
-  },
-  {
-    title: 'Description',
-    dataIndex: 'description',
-    valueType: 'textarea',
-    copyable: true,
-    sorter: true,
-  },
-];
 
 const defaultModal = [
   {
@@ -135,10 +103,6 @@ const BaseDss: React.FC<any> = ({ pathName }) => {
   const [topsis, setTopsis] = useState({ alternativeName: '' });
 
   const pathNameLoc = pathName ? pathName : location.pathname;
-
-  const title = getPageTitle({
-    pathname: pathNameLoc,
-  });
 
   const reload = () => {
     actionRefProTable.current?.reload();
@@ -284,7 +248,7 @@ const BaseDss: React.FC<any> = ({ pathName }) => {
           />
         </Col>
         <Col span={7} style={{ margin: '3px' }}>
-          <ModuleTableListCriteria
+          <ModuleTableListDashboard
             title={'WP'}
             footer={() => {
               return (
@@ -313,7 +277,7 @@ const BaseDss: React.FC<any> = ({ pathName }) => {
           />
         </Col>
         <Col span={7} style={{ margin: '3px' }}>
-          <ModuleTableListCriteria
+          <ModuleTableListDashboard
             title={'TOPSIS'}
             footer={() => {
               return (

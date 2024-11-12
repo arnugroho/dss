@@ -464,12 +464,6 @@ const BaseCriteria: React.FC<any> = ({ pathName }) => {
       valueType: 'text',
     },
     {
-      title: 'Parent',
-      dataIndex: ['criteriaParent', 'criteriaName'],
-      valueType: 'text',
-      editable: false,
-    },
-    {
       title: 'Bobot',
       dataIndex: 'criteriaWeight',
       valueType: 'digit',
@@ -492,17 +486,7 @@ const BaseCriteria: React.FC<any> = ({ pathName }) => {
       dataIndex: 'description',
       valueType: 'textarea',
       copyable: true,
-    },
-    {
-      title: 'Is Active',
-      dataIndex: 'statusDelete',
-      valueType: 'switch',
-      render: (dom, entity) => {
-        return <> {entity.statusDelete ? 'YA' : 'TIDAK'} </>;
-      },
-      copyable: true,
-      sorter: true,
-    },
+    }
   ];
 
   const [display, setDisplay] = useState('List');
@@ -514,7 +498,6 @@ const BaseCriteria: React.FC<any> = ({ pathName }) => {
     };
     getCriteria(params, options).then(value => {
       value.data.forEach((value: { statusDelete: boolean; uuid: any; hasChild: string }) => {
-        console.log(value)
         setSelectedRows((prevState: any) => {
           if (value.statusDelete && value.hasChild === 'TIDAK') {
             return [...prevState, value.uuid];

@@ -1,8 +1,8 @@
-
 import { RequestOptionsType } from '@ant-design/pro-utils/es/typing';
-import {request} from "@umijs/max";
+import { request } from '@umijs/max';
 
 const route = 'criteria';
+
 export async function getCriteria(params: API_TYPES.TableParams, options?: { [key: string]: any }) {
   return request<API_TYPES.DefaultList>(`${API_URL}/${route}/paged`, {
     method: 'POST',
@@ -11,7 +11,10 @@ export async function getCriteria(params: API_TYPES.TableParams, options?: { [ke
   });
 }
 
-export async function getCriteriaTree(params: API_TYPES.TableParams, options?: { [key: string]: any }) {
+export async function getCriteriaTree(
+  params: API_TYPES.TableParams,
+  options?: { [key: string]: any },
+) {
   return request<API_TYPES.DefaultList>(`${API_URL}/${route}/paged/tree`, {
     method: 'POST',
     data: { ...params, filter: { ...params, ...options } },
@@ -19,46 +22,51 @@ export async function getCriteriaTree(params: API_TYPES.TableParams, options?: {
   });
 }
 
-export async function getCriteriaAllTree(params: API_TYPES.TableParams, options?: { [key: string]: any }) {
-  let response =  request<API_TYPES.DefaultList>(`${API_URL}/${route}/paged/all/tree`, {
+export async function getCriteriaAllTree(
+  params: API_TYPES.TableParams,
+  options?: { [key: string]: any },
+) {
+  let response = request<API_TYPES.DefaultList>(`${API_URL}/${route}/paged/all/tree`, {
     method: 'POST',
     data: { ...params, filter: { ...params, ...options } },
     ...(options || {}),
   });
 
-  const removeEmptyChildren = (data) => {
-    return data.map(item => {
+  const removeEmptyChildren = (data: any[]) => {
+    return data.map((item) => {
       // Check if item has children and apply recursion if needed
       if (Array.isArray(item.children)) {
         item.children = removeEmptyChildren(item.children); // Recursively clean children
         // Remove `children` property if it’s an empty array after recursion
         if (item.children.length === 0) {
-          item['isDisabled'] = false
+          item['isDisabled'] = false;
           delete item.children;
         } else {
-          item['isDisabled'] = true
+          item['isDisabled'] = true;
         }
       }
       return item;
     });
   };
 
-  response.then((result) => {
+  response
+    .then((result) => {
       if (result.status === 200) {
-        let a = removeEmptyChildren(result.data);
-      } else {
-        return true;
+        removeEmptyChildren(result.data);
       }
+      return true;
     })
     .catch(() => {
       return false;
     });
 
-
-  return response
+  return response;
 }
 
-export async function getCriteriaChild(params: API_TYPES.TableParams, options?: { [key: string]: any }) {
+export async function getCriteriaChild(
+  params: API_TYPES.TableParams,
+  options?: { [key: string]: any },
+) {
   return request<API_TYPES.DefaultList>(`${API_URL}/${route}/paged/child`, {
     method: 'POST',
     data: { ...params, filter: { ...params, ...options } },
@@ -66,7 +74,10 @@ export async function getCriteriaChild(params: API_TYPES.TableParams, options?: 
   });
 }
 
-export async function getCriteriaParent(params: API_TYPES.TableParams, options?: { [key: string]: any }) {
+export async function getCriteriaParent(
+  params: API_TYPES.TableParams,
+  options?: { [key: string]: any },
+) {
   return request<API_TYPES.DefaultList>(`${API_URL}/${route}/paged/parent`, {
     method: 'POST',
     data: { ...params, filter: { ...params, ...options } },
@@ -104,6 +115,18 @@ export async function getCriteriaByUuid(uuid: string) {
 
 export async function getCriteriaSelect() {
   return request<RequestOptionsType>(`${API_URL}/${route}/select`, {
+    method: 'GET',
+  });
+}
+
+export async function getSumWeight() {
+  return request<RequestOptionsType>(`${API_URL}/${route}/sumweight`, {
+    method: 'GET',
+  });
+}
+
+export async function getSumWeightAll() {
+  return request<RequestOptionsType>(`${API_URL}/${route}/sumweight/all`, {
     method: 'GET',
   });
 }
