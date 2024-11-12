@@ -41,7 +41,12 @@ export const handleRemoveCriteriaList = async (selectedRows: API_TYPES.CriteriaL
 export const handleUpdateCriteria = async (record: API_TYPES.CriteriaListItem) => {
   return updateCriteria(record)
     .then(async (result) => {
-      return result.status === 200;
+      if (result.status === 200) {
+        return true;
+      } else {
+        message.error(result.message)
+        return false;
+      }
     })
     .catch(async () => {
       return false;
@@ -54,7 +59,6 @@ export const handleAddCriteria = async (fields: API_TYPES.CriteriaListItem) => {
       if (result.status === 200) {
         return true;
       } else {
-        console.log(result.message)
         message.error(result.message)
         return false;
       }

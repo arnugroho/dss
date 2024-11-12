@@ -1,6 +1,6 @@
 import { PlusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { ProTable } from '@ant-design/pro-components';
-import { Button, Col, Row, Space } from 'antd';
+import {Alert, Button, Col, Row, Space} from 'antd';
 import React from 'react';
 
 const ModuleTableListCriteria: React.FC<any> = ({
@@ -21,6 +21,7 @@ const ModuleTableListCriteria: React.FC<any> = ({
   buttonNewVisibility = true,
   buttonTreeVisibility = true,
   handleChange = () => {},
+  bobot
 }) => {
   return (
     <>
@@ -93,16 +94,18 @@ const ModuleTableListCriteria: React.FC<any> = ({
               selectedRowKeys,
               onChange: (_selectedKey, selectedRows) => {
                 // di filter khusus yg gak punya chiild
-                const filteredSelectedRows = selectedRows.filter(item => item.hasChild === 'TIDAK').map(item => item.uuid);
+                const filteredSelectedRows = selectedRows
+                  .filter((item) => item.hasChild === 'TIDAK')
+                  .map((item) => item.uuid);
 
                 setSelectedRows(_selectedKey);
                 let selectedData = selectedRowKeys.filter((item) => !_selectedKey.includes(item));
                 if (selectedData.length === 0) {
                   selectedData = _selectedKey.filter((item) => !selectedRowKeys.includes(item));
                 }
-                setSelectedRows(filteredSelectedRows)
+                setSelectedRows(filteredSelectedRows);
                 selectedData.forEach((dataValue: any) => {
-                    handleRemove(dataValue);
+                  handleRemove(dataValue);
                 });
               },
               getCheckboxProps: (record) => ({
@@ -123,6 +126,8 @@ const ModuleTableListCriteria: React.FC<any> = ({
                   {/*  /!*</Button>*!/*/}
                   {/*</span>*/}
                   <span>{`Kriteria Aktif: ${selectedRows.length} `}</span>
+                  <span>{bobot === 100 ? <Alert message={`Total Bobot : ${bobot} `} type="success" />
+                    : <Alert message={`Total Bobot : ${bobot}, Silahkan Cek Kembali Bobot Kriteria`} type="error" />}</span>
                 </Space>
               );
             }}

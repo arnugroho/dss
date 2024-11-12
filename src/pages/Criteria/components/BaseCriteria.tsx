@@ -20,7 +20,7 @@ import {
   getCriteria, getCriteriaAllTree,
   getCriteriaByUuid,
   getCriteriaParent,
-  getCriteriaTree,
+  getCriteriaTree, getSumWeightAll,
 } from '@/services/api-app/api/criteria_api';
 import {
   handleAddCriteria,
@@ -347,6 +347,7 @@ const BaseCriteria: React.FC<any> = ({ pathName }) => {
   const [isNew, setIsNew] = useState<boolean>(true);
   const [selectedRowsState, setSelectedRows] = useState<any[]>([]);
   const [treeData, setTreeData] = useState<any[]>(treeDataJson);
+  const [bobot, setBobot] = useState(0);
 
   const pathNameLoc = pathName ? pathName : location.pathname;
 
@@ -401,6 +402,10 @@ const BaseCriteria: React.FC<any> = ({ pathName }) => {
     getCriteriaTree(params, options).then((value) => {
       setTreeData(value.data);
     });
+
+    getSumWeightAll().then(value => {
+      setBobot(value.data)
+    })
   };
 
   useEffect(() => {
@@ -507,6 +512,10 @@ const BaseCriteria: React.FC<any> = ({ pathName }) => {
         });
       });
     })
+
+    getSumWeightAll().then(value => {
+      setBobot(value.data)
+    })
   }, []);
 
   return (
@@ -568,10 +577,8 @@ const BaseCriteria: React.FC<any> = ({ pathName }) => {
           handleModalOpen={handleModalOpen}
           setIsNew={setIsNew}
           handleUpdate={(data: API_TYPES.CriteriaListItem) => {
-            handleUpdateCriteria(data).then((value) => {
-              if (value) {
-                reload();
-              }
+            handleUpdateCriteria(data).then(() => {
+              reload()
             });
           }}
           handleRemove={(uuid: string) => {
@@ -585,6 +592,7 @@ const BaseCriteria: React.FC<any> = ({ pathName }) => {
           setSelectedRows={setSelectedRows}
           selectedRowKeys={selectedRowsState}
           title={title}
+          bobot={bobot}
         />
       )}
       {display === 'Card' && (
