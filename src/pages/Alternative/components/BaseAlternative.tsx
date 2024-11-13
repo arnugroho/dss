@@ -5,9 +5,7 @@ import { history } from '@@/exports';
 import { ActionType, getPageTitle, ProColumns } from '@ant-design/pro-components';
 
 import ModuleModalForm from '@/components/Container/ModuleModalForm';
-import ModuleTableListCriteria from '@/components/Container/ModuleTableListCriteria';
 import DrawerContainer from '@/components/Operation/DrawerContainer';
-import StatisticDashboard from '@/pages/Alternative/components/StatisticDashboard';
 import { getAlternative, getAlternativeByUuid } from '@/services/api-app/api/alternative_api';
 import { getCriteriaChild } from '@/services/api-app/api/criteria_api';
 import {
@@ -355,8 +353,6 @@ const BaseAlternative: React.FC<any> = ({ pathName }) => {
           title={title}
         />
       )}
-
-      {display === 'Statistic' && <StatisticDashboard responsive={true} />}
 
       <DrawerContainer
         showDetail={showDrawer}

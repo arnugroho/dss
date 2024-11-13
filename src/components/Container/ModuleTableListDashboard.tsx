@@ -1,6 +1,6 @@
 import { PlusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { ProTable } from '@ant-design/pro-components';
-import { Button, Col, Row, Space } from 'antd';
+import { Button, Col, Row } from 'antd';
 import React from 'react';
 
 const ModuleTableListCriteria: React.FC<any> = ({

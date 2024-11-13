@@ -15,7 +15,6 @@ import ModuleCard from '@/components/Container/ModuleCard';
 import ModuleModalForm from '@/components/Container/ModuleModalForm';
 import ModuleTableListCriteria from '@/components/Container/ModuleTableListCriteria';
 import DrawerContainer from '@/components/Operation/DrawerContainer';
-import StatisticDashboard from '@/pages/Criteria/components/StatisticDashboard';
 import {
   getCriteria, getCriteriaAllTree,
   getCriteriaByUuid,
@@ -619,8 +618,6 @@ const BaseCriteria: React.FC<any> = ({ pathName }) => {
           metasCard={metasCard}
         />
       )}
-
-      {display === 'Statistic' && <StatisticDashboard responsive={true} />}
 
       <DrawerContainer
         showDetail={showDrawer}

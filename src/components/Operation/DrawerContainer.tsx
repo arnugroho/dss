@@ -1,22 +1,15 @@
 import {
   CopyOutlined,
   DeleteFilled,
-  EllipsisOutlined,
-  LoginOutlined,
-  StarOutlined,
 } from '@ant-design/icons';
 import { ProDescriptions, ProDescriptionsItemProps } from '@ant-design/pro-components';
 import {
-  Button,
   Col,
-  Divider,
   Divider as DividerAntd,
   Drawer,
-  Dropdown,
   MenuProps,
   Row,
-  Space,
-  Tooltip,
+
 } from 'antd';
 import React, { useEffect } from 'react';
 
