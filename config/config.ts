@@ -160,5 +160,8 @@ export default defineConfig({
     strategy: 'normal',
   },
   esbuildMinifyIIFE: true,
+  codeSplitting: {
+    jsStrategy: 'granularChunks',
+  },
   requestRecord: {},
 });
