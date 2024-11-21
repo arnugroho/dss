@@ -1,9 +1,8 @@
-// @ts-ignore
-/* eslint-disable */
-import { request } from '@umijs/max';
-import {clearStorage} from "@/services/storage/localstorage";
+/* eslint-disable @typescript-eslint/no-unused-vars */
 
-/** 获取当前的用户 GET /api/currentUser */
+import { request } from '@umijs/max';
+import { clearStorage } from '@/services/storage/localstorage';
+
 export async function login(body: API_TYPES.LoginParams, options?: { [key: string]: any }) {
   return request<API_TYPES.DefaultResponse>(`${API_URL}/api/auth/signin`, {
     method: 'POST',

@@ -10,8 +10,8 @@ const { REACT_APP_ENV = 'dev' } = process.env;
 
 export default defineConfig({
   define: {
-    API_URL: 'https://bedss.digdeep.id', // API address
-    // API_URL: 'http://localhost:8080',
+    // API_URL: 'https://bedss.digdeep.id', // API address
+    API_URL: 'http://localhost:8080',
   },
   /**
    * @name 开启 hash 模式

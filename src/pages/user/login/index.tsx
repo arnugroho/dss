@@ -15,12 +15,13 @@ import {
   ProFormCheckbox,
   ProFormText,
 } from '@ant-design/pro-components';
-import { FormattedMessage, Helmet, SelectLang, useIntl, useModel } from '@umijs/max';
+import { FormattedMessage, Helmet, SelectLang, useIntl, useModel, history } from '@umijs/max';
 import { Alert, message, Tabs } from 'antd';
 import { createStyles } from 'antd-style';
 import React, { useState } from 'react';
 import { flushSync } from 'react-dom';
 import Settings from '../../../../config/defaultSettings';
+import {saveLoginHistory, saveToken} from "@/services/storage/localstorage";
 
 const useStyles = createStyles(({ token }) => {
   return {
@@ -115,31 +116,33 @@ const Login: React.FC = () => {
   };
 
   const handleSubmit = async (values: API.LoginParams) => {
-    try {
-      // 登录
-      const msg = await login({ ...values, type });
-      if (msg.status === 'ok') {
-        const defaultLoginSuccessMessage = intl.formatMessage({
-          id: 'pages.login.success',
-          defaultMessage: '登录成功！',
-        });
-        message.success(defaultLoginSuccessMessage);
-        await fetchUserInfo();
-        const urlParams = new URL(window.location.href).searchParams;
-        window.location.href = urlParams.get('redirect') || '/';
-        return;
-      }
-      console.log(msg);
-      // 如果失败去设置用户错误信息
-      setUserLoginState(msg);
-    } catch (error) {
+    // Log in
+    login({ ...values })
+      .then((res) => {
+        if (res.status === 200) {
+          saveToken(res.data);
+
+          saveLoginHistory({ username: values.username });
+
+          // const defaultLoginSuccessMessage = intl.formatMessage({
+          //   id: 'pages.login.success',
+          //   defaultMessage: 'login successful！',
+          // });
+          // message.success(defaultLoginSuccessMessage);
+          // const urlParams = new URL(window.location.href).searchParams;
+          // refresh()
+          console.log('hai')
+          history.push('/');
+        } else {
+        }
+      })
+      .catch((error) => {
       const defaultLoginFailureMessage = intl.formatMessage({
         id: 'pages.login.failure',
         defaultMessage: '登录失败，请重试！',
       });
-      console.log(error);
       message.error(defaultLoginFailureMessage);
-    }
+    })
   };
   const { status, type: loginType } = userLoginState;
 
@@ -196,13 +199,13 @@ const Login: React.FC = () => {
                   defaultMessage: '账户密码登录',
                 }),
               },
-              {
-                key: 'mobile',
-                label: intl.formatMessage({
-                  id: 'pages.login.phoneLogin.tab',
-                  defaultMessage: '手机号登录',
-                }),
-              },
+              // {
+              //   key: 'mobile',
+              //   label: intl.formatMessage({
+              //     id: 'pages.login.phoneLogin.tab',
+              //     defaultMessage: '手机号登录',
+              //   }),
+              // },
             ]}
           />
 
@@ -353,13 +356,13 @@ const Login: React.FC = () => {
             <ProFormCheckbox noStyle name="autoLogin">
               <FormattedMessage id="pages.login.rememberMe" defaultMessage="自动登录" />
             </ProFormCheckbox>
-            <a
-              style={{
-                float: 'right',
-              }}
-            >
-              <FormattedMessage id="pages.login.forgotPassword" defaultMessage="忘记密码" />
-            </a>
+            {/*<a*/}
+            {/*  style={{*/}
+            {/*    float: 'right',*/}
+            {/*  }}*/}
+            {/*>*/}
+            {/*  <FormattedMessage id="pages.login.forgotPassword" defaultMessage="忘记密码" />*/}
+            {/*</a>*/}
           </div>
         </LoginForm>
       </div>

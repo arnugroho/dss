@@ -1,11 +1,11 @@
 import { AvatarDropdown, AvatarName, Footer, Question, SelectLang } from '@/components';
+import { currentUser } from '@/services/api-app/api/auth_api';
 import type { Settings as LayoutSettings } from '@ant-design/pro-components';
 import type { RequestConfig, RunTimeLayoutConfig } from '@umijs/max';
 import { history } from '@umijs/max';
 import defaultSettings from '../config/defaultSettings';
 import { errorConfig } from './requestErrorConfig';
-import { currentUser as queryCurrentUser } from './services/ant-design-pro/api';
-const isDev = process.env.NODE_ENV === 'development';
+
 const loginPath = '/user/login';
 
 /**
@@ -13,34 +13,43 @@ const loginPath = '/user/login';
  * */
 export async function getInitialState(): Promise<{
   settings?: Partial<LayoutSettings>;
-  currentUser?: API.CurrentUser;
+  currentUser?: API_TYPES.User;
   loading?: boolean;
-  fetchUserInfo?: () => Promise<API.CurrentUser | undefined>;
+  openDrawer?: boolean;
+  isDarkMode?: boolean;
+  extraMenuReload?: boolean;
 }> {
-  const fetchUserInfo = async () => {
-    try {
-      const msg = await queryCurrentUser({
-        skipErrorHandler: true,
-      });
-      return msg.data;
-    } catch (error) {
-      history.push(loginPath);
-    }
-    return undefined;
-  };
-  // 如果不是登录页面，执行
   const { location } = history;
-  if (![loginPath, '/user/register', '/user/register-result'].includes(location.pathname)) {
-    const currentUser = await fetchUserInfo();
-    return {
-      fetchUserInfo,
-      currentUser,
-      settings: defaultSettings as Partial<LayoutSettings>,
-    };
-  }
+  let cUser: any = {};
+  console.log('location.pathname')
+  console.log(location.pathname)
+  // if (!location.pathname.includes(loginPath)) {
+    cUser = await currentUser()
+      .then((res) => {
+        if (res.status === 200) {
+          return res.data;
+        } else {
+          history.push(loginPath);
+        }
+      })
+      .catch(() => {
+        history.push(loginPath);
+      });
+  // }
+
+  // if (!location.pathname.includes(loginPath)) {
+  //   return {
+  //     settings: defaultSettings as Partial<LayoutSettings>,
+  //     isDarkMode: false,
+  //     extraMenuReload: false,
+  //     currentUser: cUser,
+  //   };
+  // }
   return {
-    fetchUserInfo,
     settings: defaultSettings as Partial<LayoutSettings>,
+    isDarkMode: false,
+    extraMenuReload: false,
+    currentUser: cUser,
   };
 }
 
@@ -62,7 +71,8 @@ export const layout: RunTimeLayoutConfig = ({ initialState }) => {
     onPageChange: () => {
       const { location } = history;
       // 如果没有登录，重定向到 login
-      if (!initialState?.currentUser && location.pathname !== loginPath) {
+      console.log(location.pathname)
+      if (!initialState?.currentUser && location.pathname === loginPath) {
         history.push(loginPath);
       }
     },
@@ -100,11 +110,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState }) => {
     // 增加一个 loading 的状态
     childrenRender: (children) => {
       // if (initialState?.loading) return <PageLoading />;
-      return (
-        <>
-          {children}
-        </>
-      );
+      return <>{children}</>;
     },
     ...initialState?.settings,
   };
