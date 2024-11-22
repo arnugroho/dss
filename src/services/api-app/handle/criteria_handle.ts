@@ -1,6 +1,6 @@
 import {
   addCriteria,
-  getCriteriaByUuid,
+  getCriteriaByUuid, removeCriteriaAhpByUuid,
   removeCriteriaByUuid,
   updateCriteria,
 } from '@/services/api-app/api/criteria_api';
@@ -8,6 +8,21 @@ import { message } from 'antd';
 
 export const handleRemoveCriteria = async (uuid: string) => {
   return removeCriteriaByUuid(uuid)
+    .then(async (result) => {
+      if (result.status === 200) {
+        return true;
+      } else {
+        message.error(result.message);
+        return false;
+      }
+    })
+    .catch(async () => {
+      return false;
+    });
+};
+
+export const handleRemoveCriteriaAhp = async (uuid: string) => {
+  return removeCriteriaAhpByUuid(uuid)
     .then(async (result) => {
       if (result.status === 200) {
         return true;

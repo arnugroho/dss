@@ -90,6 +90,41 @@ export default [
       // },
     ],
   },
+  {
+    path: '/ahp',
+    name: 'AHP GDSS',
+    icon: 'dashboard',
+    routes: [
+      // {
+      //   path: '/ahp',
+      //   redirect: '/ahp/dashboard',
+      // },
+      // {
+      //   name: 'Dashboard',
+      //   icon: 'smile',
+      //   path: '/ahp/dashboard',
+      //   component: './ahp/dashboard',
+      // },
+      // {
+      //   name: 'Analysis',
+      //   icon: 'smile',
+      //   path: '/dss/analysis',
+      //   component: './dashboard/analysis',
+      // },
+      {
+        name: 'AHP Criteria',
+        icon: 'smile',
+        path: '/ahp/criteria',
+        component: './ahp/Criteria',
+      },
+      {
+        name: 'Pairwise Comparison Form',
+        icon: 'smile',
+        path: '/ahp/pairwise',
+        component: './ahp/Pairwise',
+      },
+    ],
+  },
   // {
   //   path: '/form',
   //   icon: 'form',

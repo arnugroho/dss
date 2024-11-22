@@ -107,6 +107,12 @@ export async function removeCriteriaByUuid(uuid: string) {
   });
 }
 
+export async function removeCriteriaAhpByUuid(uuid: string) {
+  return request<Record<string, any>>(`${API_URL}/${route}/ahp/uuid/${uuid}`, {
+    method: 'DELETE',
+  });
+}
+
 export async function getCriteriaByUuid(uuid: string) {
   return request<API_TYPES.DefaultResponse>(`${API_URL}/${route}/uuid/${uuid}`, {
     method: 'GET',
