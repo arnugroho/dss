@@ -1,6 +1,8 @@
 import { getCriteria } from '@/services/api-app/api/criteria_api';
 import {Button, Card, Col, Form, Row, Slider} from 'antd';
 import { useEffect, useState } from 'react';
+import {updatePairwise} from "@/services/api-app/api/pairwise_api";
+import {handleUpdatePairwise} from "@/services/api-app/handle/pairwise_handle";
 
 
 const Index = () => {
@@ -64,8 +66,12 @@ const Index = () => {
   const handleSliderChange = (parentId, index, value) => {
     const updatedComparisons = { ...comparisons };
     updatedComparisons[parentId][index].score = value;
-    console.log(updatedComparisons);
-    setComparisons(updatedComparisons);
+    handleUpdatePairwise(updatedComparisons[parentId][index]).then(value1 => {
+      if (value1){
+        setComparisons(updatedComparisons);
+      }
+    })
+
   };
 
   const handleSubmit = () => {
