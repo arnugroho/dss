@@ -79,13 +79,13 @@ const Index = () => {
 
   };
 
-  const handleSubmit = () => {
-    console.log(comparisons);
-    // Send pairwise comparisons to the backend
-    // axios.post("/api/pairwise/save", comparisons).then(() => {
-    //   alert("Pairwise comparisons saved successfully!");
-    // });
-  };
+  // const handleSubmit = () => {
+  //   console.log(comparisons);
+  //   // Send pairwise comparisons to the backend
+  //   // axios.post("/api/pairwise/save", comparisons).then(() => {
+  //   //   alert("Pairwise comparisons saved successfully!");
+  //   // });
+  // };
 
   const ahpMarks = {
     0: '9',
@@ -155,9 +155,9 @@ const Index = () => {
         </Card>
       ))}
 
-      <Button type="primary" onClick={handleSubmit}>
-        Save Comparisons
-      </Button>
+      {/*<Button type="primary" onClick={handleSubmit}>*/}
+      {/*  Save Comparisons*/}
+      {/*</Button>*/}
     </div>
   );
 };
