@@ -1,7 +1,7 @@
 import { getCriteria } from '@/services/api-app/api/criteria_api';
 import {Button, Card, Col, Form, Row, Slider} from 'antd';
 import { useEffect, useState } from 'react';
-import {updatePairwise} from "@/services/api-app/api/pairwise_api";
+import {getPairwise, updatePairwise} from "@/services/api-app/api/pairwise_api";
 import {handleUpdatePairwise} from "@/services/api-app/handle/pairwise_handle";
 
 
@@ -20,45 +20,50 @@ const Index = () => {
       current: 1,
       pageSize: 200,
     };
-    getCriteria(params, options).then((value) => {
-      // const filteredData = value.data.filter(
-      //   (item: { isDelete: any; hasChild: string }) => !item.isDelete && item.hasChild === 'TIDAK',
-      // );
-      // console.log(filteredData)
+    getPairwise(params, options).then(value => {
+      const dataPairwise = value.data
+      console.log(dataPairwise)
+      getCriteria(params, options).then((value) => {
 
-      // Step 1: Filter Valid Criteria (statusDelete = false)
-      const validCriteria = value.data.filter((item) => !item.isDelete);
-      setCriteria(validCriteria)
-      console.log(validCriteria)
-      // Step 2: Group by `criteriaParentId`
-      const grouped = validCriteria.reduce((acc, item) => {
-        const parentId = item.criteriaParentId || "0"; // "root" for top-level criteria
-        if (!acc[parentId]) {
-          acc[parentId] = [];
-        }
-        acc[parentId].push(item);
-        return acc;
-      }, {});
-      console.log(grouped)
-      setGroupedByParent(grouped);
-
-      // Step 3: Generate Pairwise Comparisons
-      const pairs = {};
-      Object.entries(grouped).forEach(([parentId, criteria]) => {
-        pairs[parentId] = [];
-        for (let i = 0; i < criteria.length; i++) {
-          for (let j = i + 1; j < criteria.length; j++) {
-            pairs[parentId].push({
-              criteria1: criteria[i],
-              criteria2: criteria[j],
-              score: 4, // Default score (AHP scale, 1 = 4 index)
-            });
+        // Step 1: Filter Valid Criteria (statusDelete = false)
+        const validCriteria = value.data.filter((item) => !item.isDelete);
+        setCriteria(validCriteria)
+        console.log(validCriteria)
+        // Step 2: Group by `criteriaParentId`
+        const grouped = validCriteria.reduce((acc, item) => {
+          const parentId = item.criteriaParentId || "0"; // "root" for top-level criteria
+          if (!acc[parentId]) {
+            acc[parentId] = [];
           }
-        }
+          acc[parentId].push(item);
+          return acc;
+        }, {});
+        console.log(grouped)
+        setGroupedByParent(grouped);
+
+        // Step 3: Generate Pairwise Comparisons
+        const pairs = {};
+        Object.entries(grouped).forEach(([parentId, criteria]) => {
+          pairs[parentId] = [];
+          for (let i = 0; i < criteria.length; i++) {
+            for (let j = i + 1; j < criteria.length; j++) {
+              const filteredPairwise = dataPairwise.filter(
+                (item) => item.criteria1Id === criteria[i].id && item.criteria2Id === criteria[j].id
+              );
+              console.log(filteredPairwise)
+              pairs[parentId].push({
+                criteria1: criteria[i],
+                criteria2: criteria[j],
+                score: filteredPairwise.length > 0 ? filteredPairwise[0].score : 4 , // Default score (AHP scale, 1 = 4 index)
+              });
+            }
+          }
+        });
+        console.log(pairs)
+        setComparisons(pairs);
       });
-      console.log(pairs)
-      setComparisons(pairs);
-    });
+    })
+
 
   }, []);
 

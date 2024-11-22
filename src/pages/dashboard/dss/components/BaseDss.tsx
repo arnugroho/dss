@@ -232,18 +232,24 @@ const BaseDss: React.FC<any> = ({ pathName }) => {
     });
 
     getSawRank(params, options).then((value) => {
-      if (value.data.length > 0) {
-        setSaw(value.data.find((item: { rank: number }) => item.rank === 1));
+      if (value.data !== null) {
+        if (value.data.length > 0) {
+          setSaw(value.data.find((item: { rank: number }) => item.rank === 1));
+        }
       }
     });
     getWpRank(params, options).then((value) => {
-      if (value.data.length > 0) {
-        setWp(value.data.find((item: { rank: number }) => item.rank === 1));
+      if (value.data !== null) {
+        if (value.data.length > 0) {
+          setWp(value.data.find((item: { rank: number }) => item.rank === 1));
+        }
       }
     });
     getTopsisRank(params, options).then((value) => {
-      if (value.data.length > 0) {
-        setTopsis(value.data.find((item: { rank: number }) => item.rank === 1));
+      if (value.data !== null) {
+        if (value.data.length > 0) {
+          setTopsis(value.data.find((item: { rank: number }) => item.rank === 1));
+        }
       }
     });
   }, []);
