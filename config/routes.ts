@@ -112,6 +112,12 @@ export default [
       //   component: './dashboard/analysis',
       // },
       {
+        name: 'AHP Dashboard',
+        icon: 'smile',
+        path: '/ahp/dashboard',
+        component: './ahp/dashboard',
+      },
+      {
         name: 'AHP Criteria',
         icon: 'smile',
         path: '/ahp/criteria',
