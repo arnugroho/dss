@@ -117,12 +117,12 @@ export default [
         path: '/ahp/dashboard',
         component: './ahp/dashboard',
       },
-      {
-        name: 'AHP Criteria',
-        icon: 'smile',
-        path: '/ahp/criteria',
-        component: './ahp/Criteria',
-      },
+      // {
+      //   name: 'AHP Criteria',
+      //   icon: 'smile',
+      //   path: '/ahp/criteria',
+      //   component: './ahp/Criteria',
+      // },
       {
         name: 'Pairwise Comparison Form',
         icon: 'smile',
