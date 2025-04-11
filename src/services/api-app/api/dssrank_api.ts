@@ -24,3 +24,11 @@ export async function getTopsisRank(params: API_TYPES.TableParams, options?: { [
     ...(options || {}),
   });
 }
+
+export async function getPredictivePaged(params: API_TYPES.TableParams, options?: { [key: string]: any }) {
+  return request<API_TYPES.DefaultList>(`${API_URL}/Predictive/paged`, {
+    method: 'POST',
+    data: { ...params, filter: { ...params, ...options } },
+    ...(options || {}),
+  });
+}

@@ -214,7 +214,7 @@ const BaseAlternative: React.FC<any> = ({ pathName }) => {
       let criteria = value.data as [];
       criteria.forEach((cr) => {
         let jsonCr = {
-          title: cr.description,
+          title: cr.criteriaName,
           dataIndex: cr.criteriaCode,
           valueType: 'digit',
           formItemProps: {
@@ -238,7 +238,7 @@ const BaseAlternative: React.FC<any> = ({ pathName }) => {
         };
 
         let jsonTable = {
-          title: cr.description,
+          title: cr.criteriaName,
           dataIndex: cr.criteriaCode,
           valueType: 'digit',
           search: false,

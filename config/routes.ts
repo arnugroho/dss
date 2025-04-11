@@ -65,13 +65,13 @@ export default [
       //   component: './dashboard/analysis',
       // },
       {
-        name: 'Criteria',
+        name: 'Criteria / Feature',
         icon: 'smile',
         path: '/dss/criteria',
         component: './Criteria',
       },
       {
-        name: 'Alternative',
+        name: 'Alternative / Raw Data',
         icon: 'smile',
         path: '/dss/alternnative',
         component: './Alternative',

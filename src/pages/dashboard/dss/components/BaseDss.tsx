@@ -7,13 +7,14 @@ import ModuleTableListDashboard from '@/components/Container/ModuleTableListDash
 import DrawerContainer from '@/components/Operation/DrawerContainer';
 import { getAlternativeByUuid } from '@/services/api-app/api/alternative_api';
 import { getCriteriaChild, getSumWeightAll } from '@/services/api-app/api/criteria_api';
-import { getSawRank, getTopsisRank, getWpRank } from '@/services/api-app/api/dssrank_api';
+import {getPredictivePaged, getSawRank, getTopsisRank, getWpRank} from '@/services/api-app/api/dssrank_api';
 import {
   handleRemoveAlternative,
   handleRemoveAlternativeList,
 } from '@/services/api-app/handle/alternative_handle';
 import { DeleteFilled } from '@ant-design/icons';
 import {Alert, Button, Col, Row, Space, Tooltip} from 'antd';
+import ModuleTableListDashboardPredictive from "@/components/Container/ModuleTableListDashboardPredictive";
 
 export const columnsProDescriptionAlternative: ProColumns<API_TYPES.AlternativeListItem>[] = [
   {
@@ -175,6 +176,34 @@ const BaseDss: React.FC<any> = ({ pathName }) => {
     },
   ];
 
+  const columnsProTablePrediktive: ProColumns<API_TYPES.AlternativeListItem>[] = [
+    {
+      title: 'Nama Alternative',
+      dataIndex: ['alternative','alternativeName'],
+      valueType: 'text',
+      sorter: true,
+      render: (dom, entity) => {
+        return (
+          <a
+            onClick={() => {
+              getAlternativeByUuid(entity.uuid).then((value) => {
+                setCurrentRow({ ...entity, ...value.data });
+                setShowDrawer(true);
+              });
+            }}
+          >
+            {dom}
+          </a>
+        );
+      },
+    },
+    {
+      title: 'Predektif Rating',
+      dataIndex: 'hasil',
+      valueType: 'digit',
+    }
+  ];
+
   const [columnsTable, setColumnsTable] = useState<any>(columnsProTable);
 
   useEffect(() => {
@@ -191,7 +220,7 @@ const BaseDss: React.FC<any> = ({ pathName }) => {
       let criteria = value.data as [];
       criteria.forEach((cr) => {
         let jsonCr = {
-          title: cr.description,
+          title: cr.CriteriaName,
           dataIndex: cr.criteriaCode,
           valueType: 'digit',
           formItemProps: {
@@ -215,7 +244,7 @@ const BaseDss: React.FC<any> = ({ pathName }) => {
         };
 
         let jsonTable = {
-          title: cr.description,
+          title: cr.criteriaName,
           dataIndex: cr.criteriaCode,
           valueType: 'digit',
           search: false,
@@ -267,14 +296,13 @@ const BaseDss: React.FC<any> = ({ pathName }) => {
             footer={() => {
               return (
                 <>
-                  Nilai terbesar dari <b>SAW</b> adalah Kabupaten/Kota{' '}
+                  Nilai terbesar dari <b>SAW</b> adalah Karyawan{' '}
                   <b>{saw.alternativeName ? saw.alternativeName : ''}, </b> <br />
-                  Sehingga Kabupaten/Kota <b>
+                  Sehingga Karyawan <b>
                     {saw.alternativeName ? saw.alternativeName : ''}
                   </b>{' '}
                   terpilih sebagai alternatif terbaik.
-                  <br /> Dengan demikian, Kabupaten/Kota paling rawan jika terjadi bencana adalah
-                  Kabupaten/Kota <b>{saw.alternativeName ? saw.alternativeName : ''}</b>
+
                 </>
               );
             }}
@@ -298,12 +326,11 @@ const BaseDss: React.FC<any> = ({ pathName }) => {
             footer={() => {
               return (
                 <>
-                  Nilai terbesar dari <b>WP</b> adalah Kabupaten/Kota{' '}
+                  Nilai terbesar dari <b>WP</b> adalah Karyawan{' '}
                   <b>{wp.alternativeName ? wp.alternativeName : ''}, </b> <br />
-                  Sehingga Kabupaten/Kota <b>{wp.alternativeName ? wp.alternativeName : ''}</b>{' '}
+                  Sehingga Karyawan <b>{wp.alternativeName ? wp.alternativeName : ''}</b>{' '}
                   terpilih sebagai alternatif terbaik.
-                  <br /> Dengan demikian, Kabupaten/Kota paling rawan jika terjadi bencana adalah
-                  Kabupaten/Kota <b>{wp.alternativeName ? wp.alternativeName : ''}</b>
+
                 </>
               );
             }}
@@ -327,13 +354,11 @@ const BaseDss: React.FC<any> = ({ pathName }) => {
             footer={() => {
               return (
                 <>
-                  Nilai terbesar dari <b>TOPSIS</b> adalah Kabupaten/Kota{' '}
+                  Nilai terbesar dari <b>TOPSIS</b> adalah Karyawan{' '}
                   <b>{topsis.alternativeName ? topsis.alternativeName : ''}, </b> <br />
-                  Sehingga Kabupaten/Kota{' '}
+                  Sehingga Karyawan{' '}
                   <b>{topsis.alternativeName ? topsis.alternativeName : ''}</b> terpilih sebagai
                   alternatif terbaik.
-                  <br /> Dengan demikian, Kabupaten/Kota paling rawan jika terjadi bencana adalah
-                  Kabupaten/Kota <b>{topsis.alternativeName ? topsis.alternativeName : ''}</b>
                 </>
               );
             }}
@@ -348,6 +373,32 @@ const BaseDss: React.FC<any> = ({ pathName }) => {
             handleUpdate={() => {}}
             handleRemove={() => {}}
             loadPaged={getTopsisRank}
+            setSelectedRows={setSelectedRows}
+          />
+        </Col>
+      </Row>
+      <Row>
+        <Col span={21} style={{ margin: '3px' }}>
+          <ModuleTableListDashboardPredictive
+            title={'Hasil Prediksi Rating Karyawan'}
+            // footer={() => {
+            //   return (
+            //     <>
+            //       Hasil Prediksi Rating Karyawan
+            //     </>
+            //   );
+            // }}
+            setCurrentRow={setCurrentRow}
+            setShowDrawer={setShowDrawer}
+            actionRef={actionRefProTable}
+            columnsProTable={columnsProTablePrediktive}
+            handleModalOpen={handleModalOpen}
+            buttonNewVisibility={false}
+            buttonTreeVisibility={false}
+            setIsNew={setIsNew}
+            handleUpdate={() => {}}
+            handleRemove={() => {}}
+            loadPaged={getPredictivePaged}
             setSelectedRows={setSelectedRows}
           />
         </Col>
